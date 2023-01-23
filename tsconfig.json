@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["ES2019", "DOM"],
+    "declaration": true,
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "declarationDir": "./lib",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "es6",
+    "sourceMap": true,
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}
