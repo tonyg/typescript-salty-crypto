@@ -1,6 +1,7 @@
-import { AEAD_CHACHA20_POLY1305_TAGBYTES, encrypt_detached, decrypt_detached } from '../src/aead';
+import { AEAD_CHACHA20_POLY1305_TAGBYTES, aead_encrypt_detached, aead_decrypt_detached } from '../../src/aead';
+import { it, expect } from '../harness';
 
-test('section 2.8.2 from rfc 8439', () => {
+it('section 2.8.2 from rfc 8439', () => {
     const sunscreen_str = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
     const sunscreen = new TextEncoder().encode(sunscreen_str);
 
@@ -22,7 +23,7 @@ test('section 2.8.2 from rfc 8439', () => {
     ]).buffer);
 
     const tag = new Uint8Array(AEAD_CHACHA20_POLY1305_TAGBYTES);
-    encrypt_detached(sunscreen, sunscreen, tag, key, nonce, associated_data);
+    aead_encrypt_detached(sunscreen, sunscreen, sunscreen.byteLength, tag, key, nonce, associated_data);
     expect(sunscreen).toEqual(new Uint8Array([
         0xd3, 0x1a, 0x8d, 0x34, 0x64, 0x8e, 0x60, 0xdb, 0x7b, 0x86, 0xaf, 0xbc, 0x53, 0xef, 0x7e, 0xc2,
         0xa4, 0xad, 0xed, 0x51, 0x29, 0x6e, 0x08, 0xfe, 0xa9, 0xe2, 0xb5, 0xa7, 0x36, 0xee, 0x62, 0xd6,
@@ -39,10 +40,10 @@ test('section 2.8.2 from rfc 8439', () => {
     ]));
 
     const sunscreen2 = Uint8Array.from(sunscreen);
-    expect(decrypt_detached(sunscreen2, sunscreen2, tag, key, nonce, associated_data)).toBe(true);
+    expect(aead_decrypt_detached(sunscreen2, sunscreen2, sunscreen2.byteLength, tag, key, nonce, associated_data)).toBe(true);
     expect(new TextDecoder().decode(sunscreen2)).toBe(sunscreen_str);
 
     tag[0]++;
-    expect(decrypt_detached(sunscreen, sunscreen, tag, key, nonce, associated_data)).toBe(false);
+    expect(aead_decrypt_detached(sunscreen, sunscreen, sunscreen.byteLength, tag, key, nonce, associated_data)).toBe(false);
     expect(sunscreen).toEqual(new Uint8Array(sunscreen_str.length));
 });

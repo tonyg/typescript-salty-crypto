@@ -1,6 +1,7 @@
-import * as ChaCha from '../src/chacha20';
+import * as ChaCha from '../../src/chacha20';
+import { it, expect } from '../harness';
 
-test('chacha20_quarter_round 1', () => {
+it('chacha20_quarter_round 1', () => {
     const s = new Uint32Array(4);
     s[0] = 0x11111111;
     s[1] = 0x01020304;
@@ -10,7 +11,7 @@ test('chacha20_quarter_round 1', () => {
     expect(Array.from(s)).toEqual([0xea2a92f4, 0xcb1cf8ce, 0x4581472e, 0x5881c4bb]);
 });
 
-test('chacha20_quarter_round 2', () => {
+it('chacha20_quarter_round 2', () => {
     const s = Uint32Array.from([
         0x879531e0, 0xc5ecf37d, 0x516461b1, 0xc9a62f8a,
         0x44c20ef3, 0x3390af7f, 0xd9fc690b, 0x2a5f714c,
@@ -26,7 +27,7 @@ test('chacha20_quarter_round 2', () => {
     ]));
 });
 
-test('chacha20_block', () => {
+it('chacha20_block', () => {
     const key8 = new Uint8Array(ChaCha.CHACHA20_KEYBYTES);
     for (let i = 0; i < key8.length; i++) key8[i] = i;
     const key = new DataView(key8.buffer);
@@ -47,7 +48,7 @@ test('chacha20_block', () => {
     ]));
 });
 
-test('chacha20', () => {
+it('chacha20', () => {
     const key8 = new Uint8Array(ChaCha.CHACHA20_KEYBYTES);
     for (let i = 0; i < key8.length; i++) key8[i] = i;
     const key = new DataView(key8.buffer);

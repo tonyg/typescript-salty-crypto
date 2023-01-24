@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["ES2019", "DOM"],
+    "target": "es2017",
+    "lib": ["ES2017", "DOM"],
     "declaration": true,
-    "baseUrl": "./src",
-    "rootDir": "./src",
-    "outDir": "./lib",
-    "declarationDir": "./lib",
+    "baseUrl": ".",
+    "rootDirs": ["src", "test"],
+    "outDir": "lib",
+    "declarationDir": "lib",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "module": "es6",
+    "module": "esnext",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "allowJs": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "test/**/*"]
 }

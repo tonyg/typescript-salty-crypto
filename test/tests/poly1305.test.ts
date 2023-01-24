@@ -1,6 +1,7 @@
-import { Poly1305 } from '../src/poly1305';
+import { Poly1305 } from '../../src/poly1305';
+import { it, expect } from '../harness';
 
-test('section 2.5.2 from rfc 8439', () => {
+it('section 2.5.2 from rfc 8439', () => {
     const key = Uint8Array.from([
         0x85, 0xd6, 0xbe, 0x78, 0x57, 0x55, 0x6d, 0x33,
         0x7f, 0x44, 0x52, 0xfe, 0x42, 0xd5, 0x06, 0xa8,

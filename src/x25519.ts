@@ -574,7 +574,7 @@ export function crypto_scalarmult_base(q: Uint8Array, n: Uint8Array) {
 
 /* High-level API */
 
-export function scalarMult(n: Uint8Array, p: Uint8Array) {
+export function scalarMult(n: Uint8Array, p: Uint8Array): Uint8Array {
     if (n.length !== crypto_scalarmult_SCALARBYTES) throw new Error('bad n size');
     if (p.length !== crypto_scalarmult_BYTES) throw new Error('bad p size');
     const q = new Uint8Array(crypto_scalarmult_BYTES);
@@ -582,7 +582,7 @@ export function scalarMult(n: Uint8Array, p: Uint8Array) {
     return q;
 }
 
-export function scalarMultBase(n: Uint8Array) {
+export function scalarMultBase(n: Uint8Array): Uint8Array {
     if (n.length !== crypto_scalarmult_SCALARBYTES) throw new Error('bad n size');
     const q = new Uint8Array(crypto_scalarmult_BYTES);
     crypto_scalarmult_base(q, n);
