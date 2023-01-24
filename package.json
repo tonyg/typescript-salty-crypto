@@ -2,18 +2,22 @@
   "name": "salty-crypto",
   "version": "0.0.0",
   "scripts": {
-    "prepare": "yarn compile",
+    "prepare": "yarn compile && yarn rollup",
     "compile": "yarn tsc",
     "compile:watch": "yarn compile -w",
+    "rollup": "rollup -c",
+    "rollup:watch": "yarn rollup -w",
     "test": "node -r esm lib/test/harness.js",
     "test:watch": "inotifytest yarn test",
     "clean": "rm -rf lib/"
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.0",
     "@types/glob": "^8.0.1",
     "esm": "^3.2.25",
     "expect": "^29.4.0",
     "glob": "^8.1.0",
+    "rollup": "^3.10.1",
     "typescript": "4.9"
   },
   "dependencies": {}
