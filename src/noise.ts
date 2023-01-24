@@ -1,5 +1,3 @@
-import { AEAD_CHACHA20_POLY1305_NONCEBYTES } from './aead';
-
 export type DHKeyPair = { public: Uint8Array, secret: Uint8Array };
 
 export class Nonce {

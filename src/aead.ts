@@ -52,7 +52,7 @@ export function aead_encrypt_detached(plaintext: Uint8Array,
                                       nonce: DataView,
                                       associated_data?: Uint8Array)
 {
-    chacha20(key, nonce, plaintext, ciphertext, 1);
+    chacha20(key, nonce, plaintext, ciphertext, 1, messagelength);
     aead_tag(tag, key, nonce, ciphertext, messagelength, associated_data);
 }
 
@@ -75,9 +75,9 @@ export function aead_decrypt_detached(plaintext: Uint8Array,
     aead_tag(actual_tag, key, nonce, ciphertext, messagelength, associated_data);
     const ok = verify(actual_tag, expected_tag, actual_tag.byteLength) === 0;
     if (ok) {
-        chacha20(key, nonce, ciphertext, plaintext, 1);
+        chacha20(key, nonce, ciphertext, plaintext, 1, messagelength);
     } else {
-        plaintext.fill(0);
+        plaintext.fill(0, 0, messagelength);
     }
     return ok;
 }

@@ -44,9 +44,16 @@ export function chacha20_block(key: DataView, block: number, nonce: DataView): U
     return state;
 }
 
-export function chacha20(key: DataView, nonce: DataView, input: Uint8Array, output: Uint8Array, initial_counter = 0) {
-    const whole_blocks = input.byteLength >> 6;
-    const remaining_bytes = input.byteLength & 63;
+export function chacha20(
+    key: DataView,
+    nonce: DataView,
+    input: Uint8Array,
+    output: Uint8Array,
+    initial_counter = 0,
+    messagelength = input.byteLength,
+) {
+    const whole_blocks = messagelength >> 6;
+    const remaining_bytes = messagelength & 63;
     for (let j = 0; j < whole_blocks; j++) {
         const chunk = chacha20_block(key, initial_counter + j, nonce);
         for (let i = 0; i < 64; i++) {
