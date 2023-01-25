@@ -16,7 +16,6 @@ Includes (and passes) test vectors from [noise-c](https://github.com/rweather/no
  - support AESGCM, SHA256, SHA512, perhaps via `Crypto.subtle`?
  - support BLAKE2b, by implementing from the RFC just like BLAKE2s
  - `fallback` pattern modifier
- - deferred patterns
 
 ## Code overview
 
