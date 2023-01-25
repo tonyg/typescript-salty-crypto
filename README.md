@@ -6,8 +6,17 @@ crypto code (partly from [tweetnacl.js](https://github.com/dchest/tweetnacl-js),
 wrote [myself](https://leastfixedpoint.com/) from the RFCs) to get
 `Noise_*_25519_ChaChaPoly_BLAKE2s` working.
 
+## Status
+
 Includes (and passes) test vectors from [noise-c](https://github.com/rweather/noise-c/) and
 [snow](https://github.com/mcginty/snow/).
+
+## Potential next steps
+
+ - support AESGCM, SHA256, SHA512, perhaps via `Crypto.subtle`?
+ - support BLAKE2b, by implementing from the RFC just like BLAKE2s
+ - `fallback` pattern modifier
+ - deferred patterns
 
 ## Code overview
 
