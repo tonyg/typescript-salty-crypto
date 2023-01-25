@@ -26,14 +26,14 @@ function indent(msg: string) {
     console.log(str + msg);
 }
 
-export async function describe(what: string, f: () => (Promise<void> | void)) {
+export async function describe(what: string, f: () => (Promise<void> | void)): Promise<void> {
     indent('- ' + what);
     testDepth++;
     await f();
     testDepth--;
 }
 
-export async function it(what: string, f: () => (Promise<void> | void)) {
+export async function it(what: string, f: () => (Promise<void> | void)): Promise<void> {
     try {
         testStats.total++;
         await f();
@@ -62,12 +62,13 @@ export async function runTests(patterns: string[]): Promise<void> {
     }
 }
 
-if (Object.is(require.main, module)) {
-    console.time('tests');
-    let patterns = process.argv.slice(2);
-    if (patterns.length === 0) patterns = ['./lib/**/*.test.js'];
-    runTests(patterns).then(() => {
+(async () => {
+    if (Object.is(require.main, module)) {
+        console.time('tests');
+        let patterns = process.argv.slice(2);
+        if (patterns.length === 0) patterns = ['./lib-test/**/*.test.js'];
+        await runTests(patterns);
         console.timeEnd('tests');
         console.log(testStats);
-    });
-}
+    }
+})();

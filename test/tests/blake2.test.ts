@@ -1,4 +1,5 @@
-import { BLAKE2s } from '../../src/blake2';
+import { BLAKE2 } from '../../dist/salty-crypto.js';
+const { BLAKE2s } = BLAKE2;
 import { it, expect } from '../harness';
 
 it('Appendix B of RFC 7693', () => {

@@ -3,10 +3,10 @@
     "target": "es2017",
     "lib": ["ES2017", "DOM"],
     "declaration": true,
-    "baseUrl": "./src",
-    "rootDir": "./src",
-    "outDir": "./lib",
-    "declarationDir": "./lib",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "../lib-test",
+    "declarationDir": "../lib-test",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "module": "esnext",
@@ -14,5 +14,5 @@
     "strict": true,
     "allowJs": true
   },
-  "include": ["src/**/*"]
+  "include": ["**/*"]
 }

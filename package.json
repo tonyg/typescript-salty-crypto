@@ -6,8 +6,8 @@
   "homepage": "https://github.com/tonyg/typescript-salty-crypto",
   "license": "MIT",
   "main": "dist/salty-crypto.js",
-  "module": "lib/src/index.js",
-  "types": "lib/src/index.d.ts",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -16,14 +16,16 @@
     "url": "https://github.com/tonyg/typescript-salty-crypto"
   },
   "scripts": {
-    "prepare": "yarn compile && yarn rollup",
+    "prepare": "yarn clean && yarn compile && yarn rollup",
     "compile": "yarn tsc",
     "compile:watch": "yarn compile -w",
     "rollup": "rollup -c",
     "rollup:watch": "yarn rollup -w",
-    "test": "node -r esm lib/test/harness.js",
-    "test:watch": "cd lib && inotifytest yarn test",
-    "clean": "rm -rf lib/",
+    "test-compile": "yarn tsc -p test/tsconfig.json",
+    "test-compile:watch": "yarn test-compile -w",
+    "test": "node -r esm lib-test/harness.js",
+    "test:watch": "mkdir -p lib-test && cd lib-test && inotifytest yarn test",
+    "clean": "rm -rf lib/ lib-test/ dist/",
     "fixcopyright": "fixcopyright.rkt --preset-typescript --file-pattern 'src/**.ts' MIT && fixcopyright.rkt --preset-typescript --file-pattern 'test/**.ts' MIT"
   },
   "devDependencies": {
@@ -33,6 +35,7 @@
     "expect": "^29.4.0",
     "glob": "^8.1.0",
     "rollup": "^3.10.1",
+    "rollup-plugin-dts": "^5.1.1",
     "typescript": "4.9"
   },
   "dependencies": {}

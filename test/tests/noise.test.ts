@@ -1,7 +1,16 @@
-import { DHKeyPair, NoiseHandshake, NoiseProtocolAlgorithms, TransportState } from '../../src/noise';
-import { isOneWay, lookupPattern } from '../../src/patterns';
-import { Noise_25519_ChaChaPoly_BLAKE2s } from '../../src/profiles';
-import { scalarMultBase } from '../../src/x25519';
+import { Noise, Patterns, NoiseProfiles, X25519 } from '../../dist/salty-crypto.js';
+
+type DHKeyPair = Noise.DHKeyPair;
+type TransportState = Noise.TransportState;
+type NoiseProtocolAlgorithms = Noise.NoiseProtocolAlgorithms;
+const { NoiseHandshake } = Noise;
+
+const { isOneWay, lookupPattern } = Patterns;
+
+const { Noise_25519_ChaChaPoly_BLAKE2s } = NoiseProfiles;
+
+const { scalarMultBase } = X25519;
+
 import { describe, it, expect } from '../harness';
 
 import fs from 'fs';

@@ -1,4 +1,4 @@
-import * as ChaCha from '../../src/chacha20';
+import { ChaCha20 as ChaCha } from '../../dist/salty-crypto.js';
 import { it, expect } from '../harness';
 
 it('chacha20_quarter_round 1', () => {

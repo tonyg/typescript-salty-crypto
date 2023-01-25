@@ -1,4 +1,6 @@
-import { Poly1305 } from '../../src/poly1305';
+import { Poly1305 as P } from '../../dist/salty-crypto.js';
+const { Poly1305 } = P;
+
 import { it, expect } from '../harness';
 
 it('section 2.5.2 from rfc 8439', () => {

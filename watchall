@@ -1,0 +1,22 @@
+#!/bin/sh
+
+cd $(dirname $0)
+
+first=y
+
+open() {
+    if [ "$first" = "y" ]
+    then
+        tmux new-window "$1"
+        first=n
+    else
+        tmux split-window "$1" \; select-layout tiled
+    fi
+}
+
+open "yarn compile:watch"
+open "yarn rollup:watch"
+open "yarn test-compile:watch"
+open "yarn test:watch"
+
+tmux select-layout even-vertical

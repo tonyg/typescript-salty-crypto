@@ -1,4 +1,5 @@
-import { AEAD_CHACHA20_POLY1305_TAGBYTES, aead_encrypt_detached, aead_decrypt_detached } from '../../src/aead';
+import { AEAD } from '../../dist/salty-crypto.js';
+const { AEAD_CHACHA20_POLY1305_TAGBYTES, aead_encrypt_detached, aead_decrypt_detached } = AEAD;
 import { it, expect } from '../harness';
 
 it('section 2.8.2 from rfc 8439', () => {
