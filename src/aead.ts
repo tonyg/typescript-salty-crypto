@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 // RFC-8439 AEAD construction.
 
 export const AEAD_CHACHA20_POLY1305_KEYBYTES = 32;

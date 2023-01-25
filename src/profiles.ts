@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 import { BLAKE2s } from './blake2';
 import { AEAD_CHACHA20_POLY1305_NONCEBYTES, AEAD_CHACHA20_POLY1305_TAGBYTES, aead_decrypt_detached, aead_encrypt_detached } from './aead';
 import { DHKeyPair, NoiseProtocolAlgorithms, Nonce } from './noise';

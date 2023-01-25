@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 // TypeScript port of the randomness-generation code from nacl-fast.js from tweetnacl.
 //
 // The comment in that file reads as follows:

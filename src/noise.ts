@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 export type DHKeyPair = { public: Uint8Array, secret: Uint8Array };
 
 export class Nonce {

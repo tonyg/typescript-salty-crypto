@@ -9,7 +9,8 @@
     "rollup:watch": "yarn rollup -w",
     "test": "node -r esm lib/test/harness.js",
     "test:watch": "inotifytest yarn test",
-    "clean": "rm -rf lib/"
+    "clean": "rm -rf lib/",
+    "fixcopyright": "fixcopyright.rkt --preset-typescript --file-pattern 'src/**.ts' MIT && fixcopyright.rkt --preset-typescript --file-pattern 'test/**.ts' MIT"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.0",

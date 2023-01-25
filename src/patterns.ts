@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 import type { HandshakePattern, PreMessage, Token } from './noise';
 
 export const PATTERNS: { [key: string]: HandshakePattern } = {};

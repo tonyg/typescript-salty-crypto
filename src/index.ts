@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 export * as AEAD from './aead';
 export * as BLAKE2 from './blake2';
 export * as ChaCha20 from './chacha20';
