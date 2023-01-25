@@ -47,16 +47,34 @@ function aead_tag(tag: Uint8Array,
     p.finish(tag, 0);
 }
 
-export function aead_encrypt_detached(plaintext: Uint8Array,
-                                      ciphertext: Uint8Array,
-                                      messagelength: number,
-                                      tag: Uint8Array,
-                                      key: DataView,
-                                      nonce: DataView,
-                                      associated_data?: Uint8Array)
-{
+export function aead_encrypt_detached(
+    plaintext: Uint8Array,
+    ciphertext: Uint8Array,
+    messagelength: number,
+    tag: Uint8Array,
+    key: DataView,
+    nonce: DataView,
+    associated_data?: Uint8Array,
+): void {
     chacha20(key, nonce, plaintext, ciphertext, 1, messagelength);
     aead_tag(tag, key, nonce, ciphertext, messagelength, associated_data);
+}
+
+export function aead_encrypt(
+    plaintext: Uint8Array,
+    key: DataView,
+    nonce: DataView,
+    associated_data?: Uint8Array,
+): Uint8Array {
+    const ciphertextAndTag = new Uint8Array(plaintext.byteLength + AEAD_CHACHA20_POLY1305_TAGBYTES);
+    aead_encrypt_detached(plaintext,
+                          ciphertextAndTag,
+                          plaintext.byteLength,
+                          ciphertextAndTag.subarray(plaintext.byteLength),
+                          key,
+                          nonce,
+                          associated_data);
+    return ciphertextAndTag;
 }
 
 // `verify` from nacl-fast.js
@@ -77,10 +95,27 @@ export function aead_decrypt_detached(plaintext: Uint8Array,
     const actual_tag = new Uint8Array(AEAD_CHACHA20_POLY1305_TAGBYTES);
     aead_tag(actual_tag, key, nonce, ciphertext, messagelength, associated_data);
     const ok = verify(actual_tag, expected_tag, actual_tag.byteLength) === 0;
-    if (ok) {
-        chacha20(key, nonce, ciphertext, plaintext, 1, messagelength);
-    } else {
-        plaintext.fill(0, 0, messagelength);
-    }
+    if (ok) chacha20(key, nonce, ciphertext, plaintext, 1, messagelength);
     return ok;
+}
+
+export class AuthenticationFailure extends Error {}
+
+export function aead_decrypt(
+    ciphertextAndTag: Uint8Array,
+    key: DataView,
+    nonce: DataView,
+    associated_data?: Uint8Array,
+): Uint8Array {
+    const plaintext = new Uint8Array(ciphertextAndTag.byteLength - AEAD_CHACHA20_POLY1305_TAGBYTES);
+    if (!aead_decrypt_detached(plaintext,
+                               ciphertextAndTag,
+                               plaintext.byteLength,
+                               ciphertextAndTag.subarray(plaintext.byteLength),
+                               key,
+                               nonce,
+                               associated_data)) {
+        throw new AuthenticationFailure("ChaCha20Poly1305 AEAD authentication failed");
+    }
+    return plaintext;
 }
