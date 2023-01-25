@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://tonyg.github.io/typescript-salty-crypto/dist/salty-crypto.js"></script>
+    <style>html { font-family: sans; } body { max-width: 40em; margin: 0 auto; }</style>
+  </head>
+  <body>
+    <h1>In-browser SaltyCrypto hello-world</h1>
+    <p>
+      This is a small "hello-world" program to show that the SaltyCrypto module loads and runs
+      in a browser.
+    </p>
+    <p>
+      The <code>BLAKE2s</code> hash of the empty input is
+      <code id="expected-answer">69217a3079908094e11121d042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9</code>
+    </p>
+    <p>
+      The SaltyCrypto module computes it as: <code id="computed-answer"><i>Huh, no answer from the code! Broken somehow I guess?</i></code>
+    </p>
+    <script>
+      function toHex(bs) {
+        let s = '';
+        bs.forEach(b => {
+          s = s + '0123456789abcdef'[b >> 4];
+          s = s + '0123456789abcdef'[b & 15];
+        });
+        return s;
+      }
+      document.getElementById('computed-answer').innerText = toHex(SaltyCrypto.BLAKE2.BLAKE2s.digest(new Uint8Array()));
+    </script>
+    <p>
+      You can play with the module via the <code>SaltyCrypto</code> global variable in the
+      JavaScript console.
+    </p>
+  </body>
+</html>
