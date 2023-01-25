@@ -1,4 +1,4 @@
-# typescript-salty-crypto
+# salty-crypto
 
 A TypeScript implementation of the [Noise Protocol Framework](https://noiseprotocol.org/),
 intended to be runnable both in the browser and server-side. Also includes just enough minimal
