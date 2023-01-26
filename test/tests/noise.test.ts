@@ -1,16 +1,14 @@
-import { Noise, Patterns, NoiseProfiles, X25519 } from '../../dist/salty-crypto.js';
-
-type DHKeyPair = Noise.DHKeyPair;
-type TransportState = Noise.TransportState;
-type NoiseProtocolAlgorithms = Noise.NoiseProtocolAlgorithms;
-const { NoiseHandshake } = Noise;
-
-const { isOneWay, lookupPattern } = Patterns;
-
-const { Noise_25519_ChaChaPoly_BLAKE2s } = NoiseProfiles;
-
-const { scalarMultBase } = X25519;
-
+import {
+    Algorithms,
+    DHKeyPair,
+    Handshake,
+    INTERNALS,
+    Noise_25519_ChaChaPoly_BLAKE2s,
+    TransportState,
+    isOneWay,
+    lookupPattern,
+    matchPattern,
+} from '../../dist/salty-crypto.js';
 import { describe, it, expect } from '../harness';
 
 import fs from 'fs';
@@ -75,30 +73,30 @@ function hex(bs: Uint8Array): string {
 function skToKeypair(sk: Uint8Array | undefined): DHKeyPair | undefined {
     if (sk === void 0) return void 0;
     return {
-        public: scalarMultBase(sk),
+        public: INTERNALS.dh.x25519.scalarMultBase(sk),
         secret: sk,
     };
 }
 
 const unit = (v: string | undefined): [string] | undefined => v === void 0 ? void 0 : [v];
 
-async function testsuite_test(t: Test, algorithms: NoiseProtocolAlgorithms) {
+async function testsuite_test(t: Test, algorithms: Algorithms) {
     const isOld = 'name' in t;
-    const patternName = algorithms.matchingPattern(isOld ? t.name : t.protocol_name);
+    const patternName = matchPattern(algorithms, isOld ? t.name : t.protocol_name);
     if (!patternName) return;
     const pattern = lookupPattern(patternName);
     if (!pattern) return;
     const oneWay = isOneWay(pattern);
 
     await it(pattern.name, async () => {
-        const I = new NoiseHandshake(algorithms, pattern, 'initiator', {
+        const I = new Handshake(algorithms, pattern, 'initiator', {
             prologue: unhex(t.init_prologue),
             staticKeypair: skToKeypair(unhex(t.init_static)),
             remoteStaticPublicKey: unhex(t.init_remote_static),
             pregeneratedEphemeralKeypair: skToKeypair(unhex(t.init_ephemeral)),
             preSharedKeys: (isOld ? unit(t.init_psk) : t.init_psks)?.map(k => unhex(k)),
         });
-        const R = new NoiseHandshake(algorithms, pattern, 'responder', {
+        const R = new Handshake(algorithms, pattern, 'responder', {
             prologue: unhex(t.resp_prologue),
             staticKeypair: skToKeypair(unhex(t.resp_static)),
             remoteStaticPublicKey: unhex(t.resp_remote_static),
@@ -137,7 +135,7 @@ async function testsuite_test(t: Test, algorithms: NoiseProtocolAlgorithms) {
 }
 
 (async () => {
-    const algorithms = new Noise_25519_ChaChaPoly_BLAKE2s();
+    const algorithms = Noise_25519_ChaChaPoly_BLAKE2s;
     const load = (n: string) => JSON.parse(fs.readFileSync(path.join('test-vectors', n), 'utf-8'));
 
     await describe('https://github.com/mcginty/snow/', async () => {

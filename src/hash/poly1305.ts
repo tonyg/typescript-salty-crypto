@@ -9,10 +9,13 @@
 // * https://github.com/floodyberry/poly1305-donna
 // */
 
-export class Poly1305 {
+import type { Hash, HashAlgorithm } from '../hash';
+
+export const Poly1305 = (class Poly1305 implements HashAlgorithm {
+    static readonly NAME = "Poly1305";
     static readonly KEYBYTES = 32;
-    static readonly TAGBYTES = 16;
-    static readonly BLOCKBYTES = 16;
+    static readonly OUTBYTES = 16;
+    static readonly BLOCKLEN = 16;
 
     buffer = new Uint8Array(16);
     r = new Uint16Array(10);
@@ -21,15 +24,16 @@ export class Poly1305 {
     leftover = 0;
     fin = 0;
 
-    static digest(key: Uint8Array, input: Uint8Array): Uint8Array {
-        const p = new Poly1305(key);
-        p.update(input, 0, input.byteLength);
-        const output = new Uint8Array(Poly1305.TAGBYTES);
-        p.finish(output, 0);
-        return output;
+    static digest(input: Uint8Array, key?: Uint8Array, outlen?: number): Uint8Array {
+        const p = new Poly1305(key, outlen);
+        p.update(input);
+        return p.final();
     }
 
-    constructor(public key: Uint8Array) {
+    constructor(key?: Uint8Array, outlen?: number) {
+        if (!key) throw new Error("Poly1305: key required");
+        if ((outlen ?? Poly1305.OUTBYTES) !== Poly1305.OUTBYTES) throw new Error("Poly1305: outlen != OUTBYTES");
+
         const t0 = key[ 0] & 0xff | (key[ 1] & 0xff) << 8; this.r[0] = ( t0                     ) & 0x1fff;
         const t1 = key[ 2] & 0xff | (key[ 3] & 0xff) << 8; this.r[1] = ((t0 >>> 13) | (t1 <<  3)) & 0x1fff;
         const t2 = key[ 4] & 0xff | (key[ 5] & 0xff) << 8; this.r[2] = ((t1 >>> 10) | (t2 <<  6)) & 0x1f03;
@@ -263,7 +267,9 @@ export class Poly1305 {
         this.h[9] = h9;
     }
 
-    finish(mac: Uint8Array, macpos: number) {
+    final(mac?: Uint8Array): Uint8Array {
+        if (!mac) mac = new Uint8Array(Poly1305.OUTBYTES);
+
         if (this.leftover) {
             let i = this.leftover;
             this.buffer[i++] = 1;
@@ -319,25 +325,26 @@ export class Poly1305 {
             this.h[i] = f & 0xffff;
         }
 
-        mac[macpos + 0] = (this.h[0] >>> 0) & 0xff;
-        mac[macpos + 1] = (this.h[0] >>> 8) & 0xff;
-        mac[macpos + 2] = (this.h[1] >>> 0) & 0xff;
-        mac[macpos + 3] = (this.h[1] >>> 8) & 0xff;
-        mac[macpos + 4] = (this.h[2] >>> 0) & 0xff;
-        mac[macpos + 5] = (this.h[2] >>> 8) & 0xff;
-        mac[macpos + 6] = (this.h[3] >>> 0) & 0xff;
-        mac[macpos + 7] = (this.h[3] >>> 8) & 0xff;
-        mac[macpos + 8] = (this.h[4] >>> 0) & 0xff;
-        mac[macpos + 9] = (this.h[4] >>> 8) & 0xff;
-        mac[macpos + 10] = (this.h[5] >>> 0) & 0xff;
-        mac[macpos + 11] = (this.h[5] >>> 8) & 0xff;
-        mac[macpos + 12] = (this.h[6] >>> 0) & 0xff;
-        mac[macpos + 13] = (this.h[6] >>> 8) & 0xff;
-        mac[macpos + 14] = (this.h[7] >>> 0) & 0xff;
-        mac[macpos + 15] = (this.h[7] >>> 8) & 0xff;
+        mac[0] = (this.h[0] >>> 0) & 0xff;
+        mac[1] = (this.h[0] >>> 8) & 0xff;
+        mac[2] = (this.h[1] >>> 0) & 0xff;
+        mac[3] = (this.h[1] >>> 8) & 0xff;
+        mac[4] = (this.h[2] >>> 0) & 0xff;
+        mac[5] = (this.h[2] >>> 8) & 0xff;
+        mac[6] = (this.h[3] >>> 0) & 0xff;
+        mac[7] = (this.h[3] >>> 8) & 0xff;
+        mac[8] = (this.h[4] >>> 0) & 0xff;
+        mac[9] = (this.h[4] >>> 8) & 0xff;
+        mac[10] = (this.h[5] >>> 0) & 0xff;
+        mac[11] = (this.h[5] >>> 8) & 0xff;
+        mac[12] = (this.h[6] >>> 0) & 0xff;
+        mac[13] = (this.h[6] >>> 8) & 0xff;
+        mac[14] = (this.h[7] >>> 0) & 0xff;
+        mac[15] = (this.h[7] >>> 8) & 0xff;
+        return mac;
     };
 
-    update(m: Uint8Array, mpos: number, bytes: number) {
+    update(m: Uint8Array, mpos = 0, bytes = m.byteLength) {
         if (this.leftover) {
             let want = (16 - this.leftover);
             if (want > bytes)
@@ -366,4 +373,4 @@ export class Poly1305 {
             this.leftover += bytes;
         }
     }
-}
+}) satisfies Hash;

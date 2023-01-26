@@ -3,9 +3,8 @@
 
 // RFC-8439 ChaCha20.
 
-export const CHACHA20_KEYBYTES = 32;
-export const CHACHA20_NONCEBYTES = 12;
-export const CHACHA20_BLOCKBYTES = 64;
+import { StreamCipher } from '../cipher';
+import { Nonce } from '../nonce';
 
 function ROTATE(n: number, bits: number): number {
     return (n << bits) | (n >>> (32 - bits));
@@ -47,26 +46,41 @@ export function chacha20_block(key: DataView, block: number, nonce: DataView): U
     return state;
 }
 
-export function chacha20(
-    key: DataView,
-    nonce: DataView,
-    input: Uint8Array,
-    output: Uint8Array,
-    initial_counter = 0,
-    messagelength = input.byteLength,
-) {
-    const whole_blocks = messagelength >> 6;
-    const remaining_bytes = messagelength & 63;
-    for (let j = 0; j < whole_blocks; j++) {
-        const chunk = chacha20_block(key, initial_counter + j, nonce);
-        for (let i = 0; i < 64; i++) {
-            output[(j << 6) + i] = input[(j << 6) + i] ^ (chunk[i >> 2] >> ((i & 3) << 3));
-        }
-    }
-    if (remaining_bytes !== 0) {
-        const chunk = chacha20_block(key, initial_counter + whole_blocks, nonce);
-        for (let i = 0; i < remaining_bytes; i++) {
-            output[(whole_blocks << 6) + i] = input[(whole_blocks << 6) + i] ^ (chunk[i >> 2] >> ((i & 3) << 3));
-        }
-    }
+function serializeNonce(n: Nonce): DataView {
+    const view = new DataView(new ArrayBuffer(ChaCha20.NONCEBYTES));
+    view.setUint32(0, n.extra, true);
+    view.setUint32(4, n.lo, true);
+    view.setUint32(8, n.hi, true);
+    return view;
 }
+
+export const ChaCha20: StreamCipher = {
+    NAME: 'chacha20',
+    KEYBYTES: 32,
+    NONCEBYTES: 12,
+    BLOCKBYTES: 64,
+
+    stream_xor(key: DataView,
+               nonce0: Nonce,
+               input: Uint8Array,
+               output: Uint8Array,
+               initial_counter = 0,
+               messagelength = input.byteLength): void
+    {
+        const nonce = serializeNonce(nonce0);
+        const whole_blocks = messagelength >> 6;
+        const remaining_bytes = messagelength & 63;
+        for (let j = 0; j < whole_blocks; j++) {
+            const chunk = chacha20_block(key, initial_counter + j, nonce);
+            for (let i = 0; i < 64; i++) {
+                output[(j << 6) + i] = input[(j << 6) + i] ^ (chunk[i >> 2] >> ((i & 3) << 3));
+            }
+        }
+        if (remaining_bytes !== 0) {
+            const chunk = chacha20_block(key, initial_counter + whole_blocks, nonce);
+            for (let i = 0; i < remaining_bytes; i++) {
+                output[(whole_blocks << 6) + i] = input[(whole_blocks << 6) + i] ^ (chunk[i >> 2] >> ((i & 3) << 3));
+            }
+        }
+    }
+};

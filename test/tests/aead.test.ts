@@ -1,5 +1,4 @@
-import { AEAD } from '../../dist/salty-crypto.js';
-const { AEAD_CHACHA20_POLY1305_TAGBYTES, aead_encrypt_detached, aead_decrypt_detached } = AEAD;
+import { ChaCha20Poly1305_RFC8439, Nonce } from '../../dist/salty-crypto.js';
 import { it, expect } from '../harness';
 
 it('section 2.8.2 from rfc 8439', () => {
@@ -18,10 +17,7 @@ it('section 2.8.2 from rfc 8439', () => {
         0x98, 0x99, 0x9a, 0x9b, 0x9c, 0x9d, 0x9e, 0x9f,
     ]).buffer);
 
-    const nonce = new DataView(new Uint8Array([
-        0x07, 0x00, 0x00, 0x00,
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
-    ]).buffer);
+    const nonce = new Nonce(0x43424140, 0x47464544, 0x7);
 
     const expectedEncrypted = new Uint8Array([
         0xd3, 0x1a, 0x8d, 0x34, 0x64, 0x8e, 0x60, 0xdb, 0x7b, 0x86, 0xaf, 0xbc, 0x53, 0xef, 0x7e, 0xc2,
@@ -34,8 +30,9 @@ it('section 2.8.2 from rfc 8439', () => {
         0x61, 0x16,
     ]);
 
-    const tag = new Uint8Array(AEAD_CHACHA20_POLY1305_TAGBYTES);
-    aead_encrypt_detached(sunscreen, sunscreen, sunscreen.byteLength, tag, key, nonce, associated_data);
+    const tag = new Uint8Array(ChaCha20Poly1305_RFC8439.TAGBYTES);
+    ChaCha20Poly1305_RFC8439.encrypt_detached(
+        sunscreen, sunscreen, sunscreen.byteLength, tag, key, nonce, associated_data);
     expect(sunscreen).toEqual(expectedEncrypted);
     expect(tag).toEqual(new Uint8Array([
         0x1a, 0xe1, 0x0b, 0x59, 0x4f, 0x09, 0xe2, 0x6a,
@@ -43,10 +40,13 @@ it('section 2.8.2 from rfc 8439', () => {
     ]));
 
     const sunscreen2 = Uint8Array.from(sunscreen);
-    expect(aead_decrypt_detached(sunscreen2, sunscreen2, sunscreen2.byteLength, tag, key, nonce, associated_data)).toBe(true);
+    expect(ChaCha20Poly1305_RFC8439.decrypt_detached(
+        sunscreen2, sunscreen2, sunscreen2.byteLength, tag, key, nonce, associated_data))
+        .toBe(true);
     expect(new TextDecoder().decode(sunscreen2)).toBe(sunscreen_str);
 
     tag[0]++;
-    expect(aead_decrypt_detached(sunscreen, sunscreen, sunscreen.byteLength, tag, key, nonce, associated_data)).toBe(false);
+    expect(ChaCha20Poly1305_RFC8439.decrypt_detached(
+        sunscreen, sunscreen, sunscreen.byteLength, tag, key, nonce, associated_data)).toBe(false);
     expect(sunscreen).toEqual(expectedEncrypted);
 });

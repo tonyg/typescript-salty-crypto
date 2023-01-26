@@ -1,5 +1,4 @@
-import { BLAKE2 } from '../../dist/salty-crypto.js';
-const { BLAKE2s } = BLAKE2;
+import { BLAKE2s } from '../../dist/salty-crypto.js';
 import { it, expect } from '../harness';
 
 it('Appendix B of RFC 7693', () => {
@@ -28,8 +27,8 @@ it('Appendix E of RFC 7693', () => {
     [16, 20, 28, 32].forEach(outlen => {
         [0, 3, 64, 65, 255, 1024].forEach(inlen => {
             const input = seq(inlen, inlen);
-            ctx.update(BLAKE2s.digest(input, outlen));
-            ctx.update(BLAKE2s.digest(input, outlen, seq(outlen, outlen)));
+            ctx.update(BLAKE2s.digest(input, void 0, outlen));
+            ctx.update(BLAKE2s.digest(input, seq(outlen, outlen), outlen));
         });
     });
 

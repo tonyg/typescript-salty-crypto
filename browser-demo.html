@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://tonyg.github.io/typescript-salty-crypto/dist/salty-crypto.js"></script>
+    <script src="dist/salty-crypto.js"></script>
     <style>html { font-family: sans; } body { max-width: 40em; margin: 0 auto; }</style>
   </head>
   <body>
@@ -26,7 +26,7 @@
         });
         return s;
       }
-      document.getElementById('computed-answer').innerText = toHex(SaltyCrypto.BLAKE2.BLAKE2s.digest(new Uint8Array()));
+      document.getElementById('computed-answer').innerText = toHex(SaltyCrypto.BLAKE2s.digest(new Uint8Array()));
     </script>
     <p>
       You can play with the module via the <code>SaltyCrypto</code> global variable in the

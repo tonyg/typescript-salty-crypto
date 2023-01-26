@@ -1,7 +1,18 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import type { HandshakePattern, PreMessage, Token } from './noise';
+export type KeyTransferToken = 'e' | 's';
+export type KeyMixToken = 'ee' | 'es' | 'se' | 'ss' | 'psk';
+export type Token = KeyTransferToken | KeyMixToken;
+export type PreMessage = ['e'] | ['s'] | ['e', 's'] | [];
+
+export interface HandshakePattern {
+    name: string; // e.g. "NNpsk2"
+    baseName: string; // e.g. "NN"
+    messages: Token[][];
+    initiatorPreMessage: PreMessage;
+    responderPreMessage: PreMessage;
+}
 
 export const PATTERNS: { [key: string]: HandshakePattern } = {};
 

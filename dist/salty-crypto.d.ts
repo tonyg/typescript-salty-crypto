@@ -1,118 +1,220 @@
-declare const AEAD_CHACHA20_POLY1305_KEYBYTES = 32;
-declare const AEAD_CHACHA20_POLY1305_NONCEBYTES = 12;
-declare const AEAD_CHACHA20_POLY1305_TAGBYTES = 16;
-declare function aead_encrypt_detached(plaintext: Uint8Array, ciphertext: Uint8Array, messagelength: number, tag: Uint8Array, key: DataView, nonce: DataView, associated_data?: Uint8Array): void;
-declare function aead_encrypt(plaintext: Uint8Array, key: DataView, nonce: DataView, associated_data?: Uint8Array): Uint8Array;
-declare function aead_decrypt_detached(plaintext: Uint8Array, ciphertext: Uint8Array, messagelength: number, expected_tag: Uint8Array, key: DataView, nonce: DataView, associated_data?: Uint8Array): boolean;
+declare class Nonce {
+    lo: number;
+    hi: number;
+    extra: number;
+    constructor(lo?: number, hi?: number, extra?: number);
+    increment(): void;
+    reset(lo?: number, hi?: number, extra?: number): void;
+    static get MAX(): Nonce;
+}
+
+declare const ChaCha20Poly1305_RFC8439: AEAD;
+
+declare const chacha20poly1305_ChaCha20Poly1305_RFC8439: typeof ChaCha20Poly1305_RFC8439;
+declare namespace chacha20poly1305 {
+  export {
+    chacha20poly1305_ChaCha20Poly1305_RFC8439 as ChaCha20Poly1305_RFC8439,
+  };
+}
+
 declare class AuthenticationFailure extends Error {
 }
-declare function aead_decrypt(ciphertextAndTag: Uint8Array, key: DataView, nonce: DataView, associated_data?: Uint8Array): Uint8Array;
+interface AEAD {
+    readonly NAME: string;
+    readonly KEYBYTES: number;
+    readonly NONCEBYTES: number;
+    readonly TAGBYTES: number;
+    encrypt_detached(plaintext: Uint8Array, ciphertext: Uint8Array, messagelength: number, tag: Uint8Array, key: DataView, nonce: Nonce, associated_data?: Uint8Array): void;
+    encrypt(plaintext: Uint8Array, key: DataView, nonce: Nonce, associated_data?: Uint8Array): Uint8Array;
+    decrypt_detached(plaintext: Uint8Array, ciphertext: Uint8Array, messagelength: number, expected_tag: Uint8Array, key: DataView, nonce: Nonce, associated_data?: Uint8Array): boolean;
+    decrypt(ciphertextAndTag: Uint8Array, key: DataView, nonce: Nonce, associated_data?: Uint8Array): Uint8Array;
+}
+declare function _encrypt(this: AEAD, plaintext: Uint8Array, key: DataView, nonce: Nonce, associated_data?: Uint8Array): Uint8Array;
+declare function _decrypt(this: AEAD, ciphertextAndTag: Uint8Array, key: DataView, nonce: Nonce, associated_data?: Uint8Array): Uint8Array;
 
-declare const aead_d_AEAD_CHACHA20_POLY1305_KEYBYTES: typeof AEAD_CHACHA20_POLY1305_KEYBYTES;
-declare const aead_d_AEAD_CHACHA20_POLY1305_NONCEBYTES: typeof AEAD_CHACHA20_POLY1305_NONCEBYTES;
-declare const aead_d_AEAD_CHACHA20_POLY1305_TAGBYTES: typeof AEAD_CHACHA20_POLY1305_TAGBYTES;
-type aead_d_AuthenticationFailure = AuthenticationFailure;
-declare const aead_d_AuthenticationFailure: typeof AuthenticationFailure;
-declare const aead_d_aead_decrypt: typeof aead_decrypt;
-declare const aead_d_aead_decrypt_detached: typeof aead_decrypt_detached;
-declare const aead_d_aead_encrypt: typeof aead_encrypt;
-declare const aead_d_aead_encrypt_detached: typeof aead_encrypt_detached;
-declare namespace aead_d {
+declare function equal(x: Uint8Array, y: Uint8Array, n: number): boolean;
+declare function xor(a: Uint8Array, b: Uint8Array): Uint8Array;
+declare function append(a: Uint8Array, b: Uint8Array): Uint8Array;
+declare const EMPTY: Uint8Array;
+
+declare const bytes_d_EMPTY: typeof EMPTY;
+declare const bytes_d_append: typeof append;
+declare const bytes_d_equal: typeof equal;
+declare const bytes_d_xor: typeof xor;
+declare namespace bytes_d {
   export {
-    aead_d_AEAD_CHACHA20_POLY1305_KEYBYTES as AEAD_CHACHA20_POLY1305_KEYBYTES,
-    aead_d_AEAD_CHACHA20_POLY1305_NONCEBYTES as AEAD_CHACHA20_POLY1305_NONCEBYTES,
-    aead_d_AEAD_CHACHA20_POLY1305_TAGBYTES as AEAD_CHACHA20_POLY1305_TAGBYTES,
-    aead_d_AuthenticationFailure as AuthenticationFailure,
-    aead_d_aead_decrypt as aead_decrypt,
-    aead_d_aead_decrypt_detached as aead_decrypt_detached,
-    aead_d_aead_encrypt as aead_encrypt,
-    aead_d_aead_encrypt_detached as aead_encrypt_detached,
+    bytes_d_EMPTY as EMPTY,
+    bytes_d_append as append,
+    bytes_d_equal as equal,
+    bytes_d_xor as xor,
   };
 }
 
-declare class BLAKE2s {
-    outlen: number;
-    static readonly KEYBYTES = 32;
-    static readonly OUTBYTES = 32;
-    static readonly BLOCKLEN = 64;
-    b: Uint8Array;
-    bv: DataView;
-    h: Uint32Array;
-    t: Uint32Array;
-    c: number;
-    static digest(input: Uint8Array, outlen?: number, key?: Uint8Array): Uint8Array;
-    constructor(outlen?: number, key?: Uint8Array);
-    update(input: Uint8Array): void;
-    final(output?: Uint8Array): Uint8Array;
-    compress(last: boolean): void;
-}
-
-type blake2_d_BLAKE2s = BLAKE2s;
-declare const blake2_d_BLAKE2s: typeof BLAKE2s;
-declare namespace blake2_d {
-  export {
-    blake2_d_BLAKE2s as BLAKE2s,
-  };
-}
-
-declare const CHACHA20_KEYBYTES = 32;
-declare const CHACHA20_NONCEBYTES = 12;
-declare const CHACHA20_BLOCKBYTES = 64;
 declare function chacha20_quarter_round(s: Uint32Array, a: number, b: number, c: number, d: number): void;
 declare function chacha20_block(key: DataView, block: number, nonce: DataView): Uint32Array;
-declare function chacha20(key: DataView, nonce: DataView, input: Uint8Array, output: Uint8Array, initial_counter?: number, messagelength?: number): void;
+declare const ChaCha20: StreamCipher;
 
-declare const chacha20_d_CHACHA20_BLOCKBYTES: typeof CHACHA20_BLOCKBYTES;
-declare const chacha20_d_CHACHA20_KEYBYTES: typeof CHACHA20_KEYBYTES;
-declare const chacha20_d_CHACHA20_NONCEBYTES: typeof CHACHA20_NONCEBYTES;
-declare const chacha20_d_chacha20: typeof chacha20;
-declare const chacha20_d_chacha20_block: typeof chacha20_block;
-declare const chacha20_d_chacha20_quarter_round: typeof chacha20_quarter_round;
-declare namespace chacha20_d {
+declare const chacha20_ChaCha20: typeof ChaCha20;
+declare const chacha20_chacha20_block: typeof chacha20_block;
+declare const chacha20_chacha20_quarter_round: typeof chacha20_quarter_round;
+declare namespace chacha20 {
   export {
-    chacha20_d_CHACHA20_BLOCKBYTES as CHACHA20_BLOCKBYTES,
-    chacha20_d_CHACHA20_KEYBYTES as CHACHA20_KEYBYTES,
-    chacha20_d_CHACHA20_NONCEBYTES as CHACHA20_NONCEBYTES,
-    chacha20_d_chacha20 as chacha20,
-    chacha20_d_chacha20_block as chacha20_block,
-    chacha20_d_chacha20_quarter_round as chacha20_quarter_round,
+    chacha20_ChaCha20 as ChaCha20,
+    chacha20_chacha20_block as chacha20_block,
+    chacha20_chacha20_quarter_round as chacha20_quarter_round,
   };
+}
+
+interface StreamCipher {
+    readonly NAME: string;
+    readonly KEYBYTES: number;
+    readonly NONCEBYTES: number;
+    readonly BLOCKBYTES: number;
+    stream_xor(key: DataView, nonce: Nonce, input: Uint8Array, output: Uint8Array, initial_counter?: number, messagelength?: number): void;
 }
 
 type DHKeyPair = {
     public: Uint8Array;
     secret: Uint8Array;
 };
-declare class Nonce {
-    lo: number;
-    hi: number;
-    constructor(lo?: number, hi?: number);
-    increment(): void;
-    reset(lo?: number, hi?: number): void;
-    static get MAX(): Nonce;
+interface DH {
+    readonly NAME: string;
+    readonly DHLEN: number;
+    generateKeypair(): DHKeyPair;
+    dh(kp: DHKeyPair, pk: Uint8Array): Uint8Array;
 }
-declare function bytesXor(a: Uint8Array, b: Uint8Array): Uint8Array;
-declare function bytesAppend(a: Uint8Array, b: Uint8Array): Uint8Array;
-type HMAC = (key: Uint8Array, data: Uint8Array) => Uint8Array;
-declare abstract class NoiseProtocolAlgorithms {
-    readonly dhlen: number;
-    readonly hmac: HMAC;
-    constructor(hmac?: HMAC);
-    abstract dhName(): string;
-    abstract generateKeypair(): DHKeyPair;
-    abstract dh(kp: DHKeyPair, pk: Uint8Array): Uint8Array;
-    abstract cipherName(): string;
-    abstract encrypt(key: DataView, nonce: Nonce, p: Uint8Array, associated_data?: Uint8Array): Uint8Array;
-    abstract decrypt(key: DataView, nonce: Nonce, c: Uint8Array, associated_data?: Uint8Array): Uint8Array;
-    abstract hashName(): string;
-    abstract hash(data: Uint8Array): Uint8Array;
-    abstract hashBlocklen(): number;
-    rekey(k: DataView): DataView;
-    _padOrHash(bs0: Uint8Array, len: number): Uint8Array;
-    hkdf(chainingKey: Uint8Array, input: Uint8Array, numOutputs: 2): [Uint8Array, Uint8Array];
-    hkdf(chainingKey: Uint8Array, input: Uint8Array, numOutputs: 3): [Uint8Array, Uint8Array, Uint8Array];
-    matchingPattern(protocol_name: string): string | null;
+declare const X25519: DH;
+
+declare const BLAKE2s: {
+    new (key?: Uint8Array, outlen?: number): {
+        b: Uint8Array;
+        bv: DataView;
+        h: Uint32Array;
+        t: Uint32Array;
+        c: number;
+        outlen: number;
+        update(input: Uint8Array, offset?: number, length?: number): void;
+        final(output?: Uint8Array): Uint8Array;
+        compress(last: boolean): void;
+    };
+    readonly NAME: "BLAKE2s";
+    readonly KEYBYTES: 32;
+    readonly OUTBYTES: 32;
+    readonly BLOCKLEN: 64;
+    digest(input: Uint8Array, key?: Uint8Array, outlen?: number): Uint8Array;
+};
+
+declare const blake2s_BLAKE2s: typeof BLAKE2s;
+declare namespace blake2s {
+  export {
+    blake2s_BLAKE2s as BLAKE2s,
+  };
 }
+
+declare const Poly1305: {
+    new (key?: Uint8Array, outlen?: number): {
+        buffer: Uint8Array;
+        r: Uint16Array;
+        h: Uint16Array;
+        pad: Uint16Array;
+        leftover: number;
+        fin: number;
+        blocks(m: Uint8Array, mpos: number, bytes: number): void;
+        final(mac?: Uint8Array): Uint8Array;
+        update(m: Uint8Array, mpos?: number, bytes?: number): void;
+    };
+    readonly NAME: "Poly1305";
+    readonly KEYBYTES: 32;
+    readonly OUTBYTES: 16;
+    readonly BLOCKLEN: 16;
+    digest(input: Uint8Array, key?: Uint8Array, outlen?: number): Uint8Array;
+};
+
+declare const poly1305_Poly1305: typeof Poly1305;
+declare namespace poly1305 {
+  export {
+    poly1305_Poly1305 as Poly1305,
+  };
+}
+
+interface Hash {
+    readonly NAME: string;
+    readonly KEYBYTES: number;
+    readonly OUTBYTES: number;
+    readonly BLOCKLEN: number;
+    digest(input: Uint8Array, key?: Uint8Array, outlen?: number): Uint8Array;
+    new (key?: Uint8Array, outlen?: number): HashAlgorithm;
+}
+interface HashAlgorithm {
+    update(input: Uint8Array, offset?: number, length?: number): void;
+    final(output?: Uint8Array): Uint8Array;
+}
+
+type HMAC = {
+    (key: Uint8Array, data: Uint8Array): Uint8Array;
+    readonly NAME: string;
+};
+declare function makeHMAC(hash: Hash): HMAC;
+
+type HKDF = {
+    (chainingKey: Uint8Array, input: Uint8Array, numOutputs: 2): [Uint8Array, Uint8Array];
+    (chainingKey: Uint8Array, input: Uint8Array, numOutputs: 3): [Uint8Array, Uint8Array, Uint8Array];
+};
+declare function makeHKDF(hmac: HMAC): HKDF;
+
+type Rekey = (k: DataView) => DataView;
+declare function makeRekey(aead: AEAD): Rekey;
+
+type rekey_Rekey = Rekey;
+declare const rekey_makeRekey: typeof makeRekey;
+declare namespace rekey {
+  export {
+    rekey_Rekey as Rekey,
+    rekey_makeRekey as makeRekey,
+  };
+}
+
+interface Algorithms {
+    dh: DH;
+    aead: AEAD;
+    hash: Hash;
+    hmac?: HMAC;
+    hkdf?: HKDF;
+    rekey?: Rekey;
+}
+declare function matchPattern(a: Algorithms, protocol_name: string): string | null;
+
+type algorithms_Algorithms = Algorithms;
+declare const algorithms_matchPattern: typeof matchPattern;
+declare namespace algorithms {
+  export {
+    algorithms_Algorithms as Algorithms,
+    algorithms_matchPattern as matchPattern,
+  };
+}
+
+declare class CipherState {
+    algorithms: Algorithms;
+    view: DataView | null;
+    nonce: Nonce;
+    constructor(algorithms: Algorithms, key?: Uint8Array);
+    encrypt(plaintext: Uint8Array, associated_data?: Uint8Array): Uint8Array;
+    decrypt(ciphertext: Uint8Array, associated_data?: Uint8Array): Uint8Array;
+    rekey(): void;
+}
+
+type cipherstate_CipherState = CipherState;
+declare const cipherstate_CipherState: typeof CipherState;
+declare namespace cipherstate {
+  export {
+    cipherstate_CipherState as CipherState,
+  };
+}
+
+type KeyTransferToken = 'e' | 's';
+type KeyMixToken = 'ee' | 'es' | 'se' | 'ss' | 'psk';
+type Token = KeyTransferToken | KeyMixToken;
+type PreMessage = ['e'] | ['s'] | ['e', 's'] | [];
 interface HandshakePattern {
     name: string;
     baseName: string;
@@ -120,17 +222,35 @@ interface HandshakePattern {
     initiatorPreMessage: PreMessage;
     responderPreMessage: PreMessage;
 }
-declare class CipherState {
-    algorithms: NoiseProtocolAlgorithms;
-    view: DataView | null;
-    nonce: Nonce;
-    constructor(algorithms: NoiseProtocolAlgorithms, key?: Uint8Array);
-    encrypt(plaintext: Uint8Array, associated_data?: Uint8Array): Uint8Array;
-    decrypt(ciphertext: Uint8Array, associated_data?: Uint8Array): Uint8Array;
-    rekey(): void;
+declare const PATTERNS: {
+    [key: string]: HandshakePattern;
+};
+declare function isOneWay(pat: HandshakePattern): boolean;
+declare function lookupPattern(name: string): HandshakePattern | null;
+
+type patterns_HandshakePattern = HandshakePattern;
+type patterns_KeyMixToken = KeyMixToken;
+type patterns_KeyTransferToken = KeyTransferToken;
+declare const patterns_PATTERNS: typeof PATTERNS;
+type patterns_PreMessage = PreMessage;
+type patterns_Token = Token;
+declare const patterns_isOneWay: typeof isOneWay;
+declare const patterns_lookupPattern: typeof lookupPattern;
+declare namespace patterns {
+  export {
+    patterns_HandshakePattern as HandshakePattern,
+    patterns_KeyMixToken as KeyMixToken,
+    patterns_KeyTransferToken as KeyTransferToken,
+    patterns_PATTERNS as PATTERNS,
+    patterns_PreMessage as PreMessage,
+    patterns_Token as Token,
+    patterns_isOneWay as isOneWay,
+    patterns_lookupPattern as lookupPattern,
+  };
 }
+
 type Role = 'initiator' | 'responder';
-type NoiseProtocolOptions = {
+type HandshakeOptions = {
     prologue?: Uint8Array;
     staticKeypair?: DHKeyPair;
     remoteStaticPublicKey?: Uint8Array;
@@ -138,16 +258,12 @@ type NoiseProtocolOptions = {
     remotePregeneratedEphemeralPublicKey?: Uint8Array;
     preSharedKeys?: Uint8Array[];
 };
-type KeyTransferToken = 'e' | 's';
-type KeyMixToken = 'ee' | 'es' | 'se' | 'ss' | 'psk';
-type Token = KeyTransferToken | KeyMixToken;
-type PreMessage = ['e'] | ['s'] | ['e', 's'] | [];
 type TransportState = {
     send: CipherState;
     recv: CipherState;
 };
-declare class NoiseHandshake {
-    algorithms: NoiseProtocolAlgorithms;
+declare class Handshake {
+    algorithms: Algorithms;
     pattern: HandshakePattern;
     role: Role;
     staticKeypair: DHKeyPair;
@@ -159,7 +275,8 @@ declare class NoiseHandshake {
     cipherState: CipherState;
     chainingKey: Uint8Array;
     handshakeHash: Uint8Array;
-    constructor(algorithms: NoiseProtocolAlgorithms, pattern: HandshakePattern, role: Role, options?: NoiseProtocolOptions);
+    hkdf: HKDF;
+    constructor(algorithms: Algorithms, pattern: HandshakePattern, role: Role, options?: HandshakeOptions);
     get isInitiator(): boolean;
     mixHash(data: Uint8Array): void;
     mixKey(input: Uint8Array): void;
@@ -180,122 +297,31 @@ declare class NoiseHandshake {
     completeHandshake(writePacket: (packet: Uint8Array) => Promise<void>, readPacket: () => Promise<Uint8Array>, handleMessage?: (_m: Uint8Array) => Promise<void>, produceMessage?: () => Promise<Uint8Array>): Promise<TransportState>;
 }
 
-type noise_d_CipherState = CipherState;
-declare const noise_d_CipherState: typeof CipherState;
-type noise_d_DHKeyPair = DHKeyPair;
-type noise_d_HMAC = HMAC;
-type noise_d_HandshakePattern = HandshakePattern;
-type noise_d_KeyMixToken = KeyMixToken;
-type noise_d_KeyTransferToken = KeyTransferToken;
-type noise_d_NoiseHandshake = NoiseHandshake;
-declare const noise_d_NoiseHandshake: typeof NoiseHandshake;
-type noise_d_NoiseProtocolAlgorithms = NoiseProtocolAlgorithms;
-declare const noise_d_NoiseProtocolAlgorithms: typeof NoiseProtocolAlgorithms;
-type noise_d_NoiseProtocolOptions = NoiseProtocolOptions;
-type noise_d_Nonce = Nonce;
-declare const noise_d_Nonce: typeof Nonce;
-type noise_d_PreMessage = PreMessage;
-type noise_d_Role = Role;
-type noise_d_Token = Token;
-type noise_d_TransportState = TransportState;
-declare const noise_d_bytesAppend: typeof bytesAppend;
-declare const noise_d_bytesXor: typeof bytesXor;
-declare namespace noise_d {
+type handshake_Handshake = Handshake;
+declare const handshake_Handshake: typeof Handshake;
+type handshake_HandshakeOptions = HandshakeOptions;
+type handshake_Role = Role;
+type handshake_TransportState = TransportState;
+declare namespace handshake {
   export {
-    noise_d_CipherState as CipherState,
-    noise_d_DHKeyPair as DHKeyPair,
-    noise_d_HMAC as HMAC,
-    noise_d_HandshakePattern as HandshakePattern,
-    noise_d_KeyMixToken as KeyMixToken,
-    noise_d_KeyTransferToken as KeyTransferToken,
-    noise_d_NoiseHandshake as NoiseHandshake,
-    noise_d_NoiseProtocolAlgorithms as NoiseProtocolAlgorithms,
-    noise_d_NoiseProtocolOptions as NoiseProtocolOptions,
-    noise_d_Nonce as Nonce,
-    noise_d_PreMessage as PreMessage,
-    noise_d_Role as Role,
-    noise_d_Token as Token,
-    noise_d_TransportState as TransportState,
-    noise_d_bytesAppend as bytesAppend,
-    noise_d_bytesXor as bytesXor,
+    handshake_Handshake as Handshake,
+    handshake_HandshakeOptions as HandshakeOptions,
+    handshake_Role as Role,
+    handshake_TransportState as TransportState,
   };
 }
 
-declare const PATTERNS: {
-    [key: string]: HandshakePattern;
-};
-declare function isOneWay(pat: HandshakePattern): boolean;
-declare function lookupPattern(name: string): HandshakePattern | null;
+declare const Noise_25519_ChaChaPoly_BLAKE2s: Algorithms;
 
-declare const patterns_d_PATTERNS: typeof PATTERNS;
-declare const patterns_d_isOneWay: typeof isOneWay;
-declare const patterns_d_lookupPattern: typeof lookupPattern;
-declare namespace patterns_d {
+declare const profiles_Noise_25519_ChaChaPoly_BLAKE2s: typeof Noise_25519_ChaChaPoly_BLAKE2s;
+declare namespace profiles {
   export {
-    patterns_d_PATTERNS as PATTERNS,
-    patterns_d_isOneWay as isOneWay,
-    patterns_d_lookupPattern as lookupPattern,
-  };
-}
-
-declare class Poly1305 {
-    key: Uint8Array;
-    static readonly KEYBYTES = 32;
-    static readonly TAGBYTES = 16;
-    static readonly BLOCKBYTES = 16;
-    buffer: Uint8Array;
-    r: Uint16Array;
-    h: Uint16Array;
-    pad: Uint16Array;
-    leftover: number;
-    fin: number;
-    static digest(key: Uint8Array, input: Uint8Array): Uint8Array;
-    constructor(key: Uint8Array);
-    blocks(m: Uint8Array, mpos: number, bytes: number): void;
-    finish(mac: Uint8Array, macpos: number): void;
-    update(m: Uint8Array, mpos: number, bytes: number): void;
-}
-
-type poly1305_d_Poly1305 = Poly1305;
-declare const poly1305_d_Poly1305: typeof Poly1305;
-declare namespace poly1305_d {
-  export {
-    poly1305_d_Poly1305 as Poly1305,
-  };
-}
-
-declare class Noise_25519_ChaChaPoly_BLAKE2s extends NoiseProtocolAlgorithms {
-    constructor();
-    dhName(): string;
-    generateKeypair(): DHKeyPair;
-    dh(kp: DHKeyPair, pk: Uint8Array): Uint8Array;
-    cipherName(): string;
-    encrypt(key: DataView, nonce: Nonce, p: Uint8Array, associated_data?: Uint8Array): Uint8Array;
-    decrypt(key: DataView, nonce: Nonce, c: Uint8Array, associated_data?: Uint8Array): Uint8Array;
-    hashName(): string;
-    hash(data: Uint8Array): Uint8Array;
-    hashBlocklen(): number;
-}
-
-type profiles_d_Noise_25519_ChaChaPoly_BLAKE2s = Noise_25519_ChaChaPoly_BLAKE2s;
-declare const profiles_d_Noise_25519_ChaChaPoly_BLAKE2s: typeof Noise_25519_ChaChaPoly_BLAKE2s;
-declare namespace profiles_d {
-  export {
-    profiles_d_Noise_25519_ChaChaPoly_BLAKE2s as Noise_25519_ChaChaPoly_BLAKE2s,
+    profiles_Noise_25519_ChaChaPoly_BLAKE2s as Noise_25519_ChaChaPoly_BLAKE2s,
   };
 }
 
 declare const _randomBytes: (out: Uint8Array, n: number) => void;
 declare function randomBytes(n: number): Uint8Array;
-
-declare const random_d__randomBytes: typeof _randomBytes;
-declare const random_d_randomBytes: typeof randomBytes;
-declare namespace random_d {
-  export {
-    random_d__randomBytes as _randomBytes,
-    random_d_randomBytes as randomBytes,
-  };
-}
 
 declare const crypto_scalarmult_BYTES = 32;
 declare const crypto_scalarmult_SCALARBYTES = 32;
@@ -308,21 +334,45 @@ declare namespace scalarMult {
 }
 declare function scalarMultBase(n: Uint8Array): Uint8Array;
 
-declare const x25519_d_crypto_scalarmult: typeof crypto_scalarmult;
-declare const x25519_d_crypto_scalarmult_BYTES: typeof crypto_scalarmult_BYTES;
-declare const x25519_d_crypto_scalarmult_SCALARBYTES: typeof crypto_scalarmult_SCALARBYTES;
-declare const x25519_d_crypto_scalarmult_base: typeof crypto_scalarmult_base;
-declare const x25519_d_scalarMult: typeof scalarMult;
-declare const x25519_d_scalarMultBase: typeof scalarMultBase;
-declare namespace x25519_d {
+declare const x25519_crypto_scalarmult: typeof crypto_scalarmult;
+declare const x25519_crypto_scalarmult_BYTES: typeof crypto_scalarmult_BYTES;
+declare const x25519_crypto_scalarmult_SCALARBYTES: typeof crypto_scalarmult_SCALARBYTES;
+declare const x25519_crypto_scalarmult_base: typeof crypto_scalarmult_base;
+declare const x25519_scalarMult: typeof scalarMult;
+declare const x25519_scalarMultBase: typeof scalarMultBase;
+declare namespace x25519 {
   export {
-    x25519_d_crypto_scalarmult as crypto_scalarmult,
-    x25519_d_crypto_scalarmult_BYTES as crypto_scalarmult_BYTES,
-    x25519_d_crypto_scalarmult_SCALARBYTES as crypto_scalarmult_SCALARBYTES,
-    x25519_d_crypto_scalarmult_base as crypto_scalarmult_base,
-    x25519_d_scalarMult as scalarMult,
-    x25519_d_scalarMultBase as scalarMultBase,
+    x25519_crypto_scalarmult as crypto_scalarmult,
+    x25519_crypto_scalarmult_BYTES as crypto_scalarmult_BYTES,
+    x25519_crypto_scalarmult_SCALARBYTES as crypto_scalarmult_SCALARBYTES,
+    x25519_crypto_scalarmult_base as crypto_scalarmult_base,
+    x25519_scalarMult as scalarMult,
+    x25519_scalarMultBase as scalarMultBase,
   };
 }
 
-export { aead_d as AEAD, blake2_d as BLAKE2, chacha20_d as ChaCha20, noise_d as Noise, profiles_d as NoiseProfiles, patterns_d as Patterns, poly1305_d as Poly1305, random_d as Random, x25519_d as X25519 };
+declare const INTERNALS: {
+    aead: {
+        chacha20poly1305: typeof chacha20poly1305;
+    };
+    cipher: {
+        chacha20: typeof chacha20;
+    };
+    dh: {
+        x25519: typeof x25519;
+    };
+    hash: {
+        blake2s: typeof blake2s;
+        poly1305: typeof poly1305;
+    };
+    noise: {
+        algorithms: typeof algorithms;
+        cipherstate: typeof cipherstate;
+        handshake: typeof handshake;
+        patterns: typeof patterns;
+        profiles: typeof profiles;
+        rekey: typeof rekey;
+    };
+};
+
+export { AEAD, Algorithms, AuthenticationFailure, BLAKE2s, bytes_d as Bytes, ChaCha20, ChaCha20Poly1305_RFC8439, CipherState, DH, DHKeyPair, HKDF, HMAC, Handshake, HandshakeOptions, HandshakePattern, Hash, HashAlgorithm, INTERNALS, KeyMixToken, KeyTransferToken, Noise_25519_ChaChaPoly_BLAKE2s, Nonce, PATTERNS, Poly1305, PreMessage, Rekey, Role, StreamCipher, Token, TransportState, X25519, _decrypt, _encrypt, _randomBytes, isOneWay, lookupPattern, makeHKDF, makeHMAC, matchPattern, randomBytes };

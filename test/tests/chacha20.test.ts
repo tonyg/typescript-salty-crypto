@@ -1,4 +1,5 @@
-import { ChaCha20 as ChaCha } from '../../dist/salty-crypto.js';
+import { ChaCha20, INTERNALS, Nonce } from '../../dist/salty-crypto.js';
+const { chacha20_quarter_round, chacha20_block } = INTERNALS.cipher.chacha20;
 import { it, expect } from '../harness';
 
 it('chacha20_quarter_round 1', () => {
@@ -7,7 +8,7 @@ it('chacha20_quarter_round 1', () => {
     s[1] = 0x01020304;
     s[2] = 0x9b8d6f43;
     s[3] = 0x01234567;
-    ChaCha.chacha20_quarter_round(s, 0, 1, 2, 3);
+    chacha20_quarter_round(s, 0, 1, 2, 3);
     expect(Array.from(s)).toEqual([0xea2a92f4, 0xcb1cf8ce, 0x4581472e, 0x5881c4bb]);
 });
 
@@ -18,7 +19,7 @@ it('chacha20_quarter_round 2', () => {
         0x53372767, 0xb00a5631, 0x974c541a, 0x359e9963,
         0x5c971061, 0x3d631689, 0x2098d9d6, 0x91dbd320,
     ]);
-    ChaCha.chacha20_quarter_round(s, 2, 7, 8, 13);
+    chacha20_quarter_round(s, 2, 7, 8, 13);
     expect(s).toEqual(Uint32Array.from([
         0x879531e0, 0xc5ecf37d, 0xbdb886dc, 0xc9a62f8a,
         0x44c20ef3, 0x3390af7f, 0xd9fc690b, 0xcfacafd2,
@@ -28,18 +29,18 @@ it('chacha20_quarter_round 2', () => {
 });
 
 it('chacha20_block', () => {
-    const key8 = new Uint8Array(ChaCha.CHACHA20_KEYBYTES);
+    const key8 = new Uint8Array(ChaCha20.KEYBYTES);
     for (let i = 0; i < key8.length; i++) key8[i] = i;
     const key = new DataView(key8.buffer);
 
-    const nonce8 = new Uint8Array(ChaCha.CHACHA20_NONCEBYTES);
+    const nonce8 = new Uint8Array(ChaCha20.NONCEBYTES);
     nonce8[3] = 0x09;
     nonce8[7] = 0x4a;
     const nonce = new DataView(nonce8.buffer);
 
     const block = 1;
 
-    const output = ChaCha.chacha20_block(key, block, nonce);
+    const output = chacha20_block(key, block, nonce);
     expect(output).toEqual(Uint32Array.from([
         0xe4e7f110, 0x15593bd1, 0x1fdd0f50, 0xc47120a3,
         0xc7f4d1c7, 0x0368c033, 0x9aaa2204, 0x4e6cd4c3,
@@ -49,13 +50,11 @@ it('chacha20_block', () => {
 });
 
 it('chacha20', () => {
-    const key8 = new Uint8Array(ChaCha.CHACHA20_KEYBYTES);
+    const key8 = new Uint8Array(ChaCha20.KEYBYTES);
     for (let i = 0; i < key8.length; i++) key8[i] = i;
     const key = new DataView(key8.buffer);
 
-    const nonce8 = new Uint8Array(ChaCha.CHACHA20_NONCEBYTES);
-    nonce8[7] = 0x4a;
-    const nonce = new DataView(nonce8.buffer);
+    const nonce = new Nonce(0x4a000000, 0, 0);
 
     const initial_counter = 1;
 
@@ -63,7 +62,7 @@ it('chacha20', () => {
     const sunscreen = new TextEncoder().encode(sunscreen_str);
     const output = new Uint8Array(sunscreen.byteLength);
 
-    ChaCha.chacha20(key, nonce, sunscreen, output, initial_counter);
+    ChaCha20.stream_xor(key, nonce, sunscreen, output, initial_counter);
     expect(output).toEqual(Uint8Array.from([
         0x6e, 0x2e, 0x35, 0x9a, 0x25, 0x68, 0xf9, 0x80, 0x41, 0xba, 0x07, 0x28, 0xdd, 0x0d, 0x69, 0x81,
         0xe9, 0x7e, 0x7a, 0xec, 0x1d, 0x43, 0x60, 0xc2, 0x0a, 0x27, 0xaf, 0xcc, 0xfd, 0x9f, 0xae, 0x0b,
@@ -76,6 +75,6 @@ it('chacha20', () => {
     ]));
 
     // Test in-place encryption
-    ChaCha.chacha20(key, nonce, sunscreen, sunscreen, initial_counter);
+    ChaCha20.stream_xor(key, nonce, sunscreen, sunscreen, initial_counter);
     expect(sunscreen).toEqual(output);
 });

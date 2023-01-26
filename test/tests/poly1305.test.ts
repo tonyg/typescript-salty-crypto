@@ -1,5 +1,4 @@
-import { Poly1305 as P } from '../../dist/salty-crypto.js';
-const { Poly1305 } = P;
+import { Poly1305 } from '../../dist/salty-crypto.js';
 
 import { it, expect } from '../harness';
 
@@ -11,7 +10,7 @@ it('section 2.5.2 from rfc 8439', () => {
         0x4a, 0xbf, 0xf6, 0xaf, 0x41, 0x49, 0xf5, 0x1b,
     ]);
     const message = new TextEncoder().encode("Cryptographic Forum Research Group");
-    expect(Poly1305.digest(key, message)).toEqual(Uint8Array.from([
+    expect(Poly1305.digest(message, key)).toEqual(Uint8Array.from([
         0xa8, 0x06, 0x1d, 0xc1, 0x30, 0x51, 0x36, 0xc6,
         0xc2, 0x2b, 0x8b, 0xaf, 0x0c, 0x01, 0x27, 0xa9,
     ]));

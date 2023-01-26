@@ -3,6 +3,8 @@
 
 // RFC 7693 BLAKE2s, ported from the C code therein.
 
+import type { Hash, HashAlgorithm } from '../hash';
+
 function ROTR32(n: number, bits: number): number {
     return (n >>> bits) | (n << (32 - bits));
 }
@@ -40,7 +42,8 @@ function sigma(i: number, j: number): number {
     return _sigma[(i << 4) + j];
 }
 
-export class BLAKE2s {
+export const BLAKE2s = (class BLAKE2s implements HashAlgorithm {
+    static readonly NAME = "BLAKE2s";
     static readonly KEYBYTES = 32;
     static readonly OUTBYTES = 32;
     static readonly BLOCKLEN = 64;
@@ -52,13 +55,13 @@ export class BLAKE2s {
     t = new Uint32Array(2);
     c = 0;
 
-    static digest(input: Uint8Array, outlen?: number, key?: Uint8Array): Uint8Array {
-        const p = new BLAKE2s(outlen, key);
+    static digest(input: Uint8Array, key?: Uint8Array, outlen?: number, ): Uint8Array {
+        const p = new BLAKE2s(key, outlen);
         p.update(input);
         return p.final();
     }
 
-    constructor(public outlen: number = BLAKE2s.OUTBYTES, key?: Uint8Array)
+    constructor(key?: Uint8Array, public outlen: number = BLAKE2s.OUTBYTES)
     {
         const keylen = key?.byteLength ?? 0;
 
@@ -68,14 +71,14 @@ export class BLAKE2s {
 
         this.h[0] ^= 0x01010000 ^ (keylen << 8) ^ outlen;
 
-        if (key !== void 0 && keylen > 0) {
+        if (key && keylen > 0) {
             this.update(key);
             this.c = 64;
         }
     }
 
-    update(input: Uint8Array) {
-        for (let i = 0; i < input.byteLength; i++) {
+    update(input: Uint8Array, offset = 0, length = input.byteLength) {
+        for (let i = offset; i < offset + length; i++) {
             if (this.c == 64) {
                 this.t[0] += this.c;
                 if (this.t[0] < this.c) this.t[1]++;
@@ -132,4 +135,4 @@ export class BLAKE2s {
             this.h[i] ^= v[i] ^ v[i + 8];
         }
     }
-}
+}) satisfies Hash;
