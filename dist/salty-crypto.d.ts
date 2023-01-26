@@ -264,7 +264,6 @@ type TransportState = {
 };
 declare class Handshake {
     algorithms: Algorithms;
-    pattern: HandshakePattern;
     role: Role;
     staticKeypair: DHKeyPair;
     remoteStaticPublicKey: Uint8Array | null;
@@ -276,7 +275,8 @@ declare class Handshake {
     chainingKey: Uint8Array;
     handshakeHash: Uint8Array;
     hkdf: HKDF;
-    constructor(algorithms: Algorithms, pattern: HandshakePattern, role: Role, options?: HandshakeOptions);
+    pattern: HandshakePattern;
+    constructor(algorithms: Algorithms, pattern: HandshakePattern | string, role: Role, options?: HandshakeOptions);
     get isInitiator(): boolean;
     mixHash(data: Uint8Array): void;
     mixKey(input: Uint8Array): void;

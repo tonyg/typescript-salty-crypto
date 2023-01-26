@@ -6,7 +6,7 @@ import * as Bytes from '../bytes';
 
 import { Algorithms } from './algorithms';
 import { CipherState } from './cipherstate';
-import { HandshakePattern, KeyMixToken, Token } from './patterns';
+import { HandshakePattern, KeyMixToken, lookupPattern, Token } from './patterns';
 import { HKDF, makeHKDF } from '../hkdf';
 import { makeHMAC } from '../hmac';
 
@@ -34,12 +34,21 @@ export class Handshake {
     chainingKey: Uint8Array;
     handshakeHash: Uint8Array;
     hkdf: HKDF;
+    pattern: HandshakePattern;
 
     constructor (public algorithms: Algorithms,
-                 public pattern: HandshakePattern,
+                 pattern: HandshakePattern | string,
                  public role: Role,
                  options: HandshakeOptions = {})
     {
+        if (typeof pattern === 'string') {
+            const p = lookupPattern(pattern);
+            if (p === null) throw new Error("Unknown Noise Protocol handshake pattern " + pattern);
+            this.pattern = p;
+        } else {
+            this.pattern = pattern;
+        }
+
         this.staticKeypair = options.staticKeypair ?? this.algorithms.dh.generateKeypair();
         this.remoteStaticPublicKey = options.remoteStaticPublicKey ?? null;
         this.ephemeralKeypair = options.pregeneratedEphemeralKeypair ?? this.algorithms.dh.generateKeypair();
