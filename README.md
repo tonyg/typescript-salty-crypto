@@ -6,6 +6,37 @@ crypto code (partly from [tweetnacl.js](https://github.com/dchest/tweetnacl-js),
 wrote [myself](https://leastfixedpoint.com/) from the RFCs) to get
 `Noise_*_25519_ChaChaPoly_BLAKE2s` working.
 
+## Example
+
+The noise protocol needs some way to transport encrypted packets back and forth. This could be
+a TCP/IP socket, a WebSocket, or something similar. Let's represent this transport as a pair of
+functions:
+
+```typescript
+async function writePacket(packet: Uint8Array): Promise<void>;
+async function readPacket(): Promise<Uint8Array>;
+```
+
+Then, on the initiating ("connecting") side,
+
+```typescript
+import { Handshake, Noise_25519_ChaChaPoly_BLAKE2s } from 'salty-crypto';
+const I = new Handshake(Noise_25519_ChaChaPoly_BLAKE2s, 'NX', 'initiator');
+const { send, recv } = await I.completeHandshake(writePacket, readPacket);
+...
+await writePacket(send.encrypt(message));
+...
+const message = rect.decrypt(await readPacket());
+...
+```
+
+On the responding ("listening") side, the code is exactly the same, except with `'responder'`
+instead of `'initiator'`.
+
+If you want to check the peer's static (~identity) key, access the `remoteStaticPublicKey`
+field of the `Handshake` object. To supply a long-lived identity keypair when handshaking, pass
+in a `HandshakeOptions` structure with a `staticKeypair` member to the `Handshake` constructor.
+
 ## Status
 
 Includes (and passes) test vectors from [noise-c](https://github.com/rweather/noise-c/) and
