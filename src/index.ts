@@ -8,6 +8,7 @@ export * from './dh';
 export * from './hash';
 export * from './hkdf';
 export * from './hmac';
+export * as IO from './io';
 export * from './noise';
 export * from './nonce';
 export * from './random';

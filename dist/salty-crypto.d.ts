@@ -162,6 +162,24 @@ type HKDF = {
 };
 declare function makeHKDF(hmac: HMAC): HKDF;
 
+declare function toHex(bs: Uint8Array): string;
+declare function fromHex(s: string): Uint8Array;
+declare function toBase64(bs: Uint8Array, withPadding?: boolean): string;
+declare function fromBase64(s: string): Uint8Array;
+
+declare const io_d_fromBase64: typeof fromBase64;
+declare const io_d_fromHex: typeof fromHex;
+declare const io_d_toBase64: typeof toBase64;
+declare const io_d_toHex: typeof toHex;
+declare namespace io_d {
+  export {
+    io_d_fromBase64 as fromBase64,
+    io_d_fromHex as fromHex,
+    io_d_toBase64 as toBase64,
+    io_d_toHex as toHex,
+  };
+}
+
 type Rekey = (k: DataView) => DataView;
 declare function makeRekey(aead: AEAD): Rekey;
 
@@ -375,4 +393,4 @@ declare const INTERNALS: {
     };
 };
 
-export { AEAD, Algorithms, AuthenticationFailure, BLAKE2s, bytes_d as Bytes, ChaCha20, ChaCha20Poly1305_RFC8439, CipherState, DH, DHKeyPair, HKDF, HMAC, Handshake, HandshakeOptions, HandshakePattern, Hash, HashAlgorithm, INTERNALS, KeyMixToken, KeyTransferToken, Noise_25519_ChaChaPoly_BLAKE2s, Nonce, PATTERNS, Poly1305, PreMessage, Rekey, Role, StreamCipher, Token, TransportState, X25519, _decrypt, _encrypt, _randomBytes, isOneWay, lookupPattern, makeHKDF, makeHMAC, matchPattern, randomBytes };
+export { AEAD, Algorithms, AuthenticationFailure, BLAKE2s, bytes_d as Bytes, ChaCha20, ChaCha20Poly1305_RFC8439, CipherState, DH, DHKeyPair, HKDF, HMAC, Handshake, HandshakeOptions, HandshakePattern, Hash, HashAlgorithm, INTERNALS, io_d as IO, KeyMixToken, KeyTransferToken, Noise_25519_ChaChaPoly_BLAKE2s, Nonce, PATTERNS, Poly1305, PreMessage, Rekey, Role, StreamCipher, Token, TransportState, X25519, _decrypt, _encrypt, _randomBytes, isOneWay, lookupPattern, makeHKDF, makeHMAC, matchPattern, randomBytes };
