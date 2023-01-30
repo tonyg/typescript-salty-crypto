@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+// -*- javascript -*-
+
+const { IO, X25519 } = require('..');
+const kp = X25519.generateKeypair();
+console.log('secret:', IO.toHex(kp.secret));
+console.log('public:', IO.toHex(kp.public));

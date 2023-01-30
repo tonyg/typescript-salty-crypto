@@ -28,6 +28,9 @@
     "clean": "rm -rf lib/ lib-test/ dist/",
     "fixcopyright": "fixcopyright.rkt --preset-typescript --file-pattern 'src/**.ts' MIT && fixcopyright.rkt --preset-typescript --file-pattern 'test/**.ts' MIT"
   },
+  "bin": {
+    "salty-crypto-keygen-x25519": "./bin/salty-crypto-keygen-x25519"
+  },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.0",
     "@types/glob": "^8.0.1",
