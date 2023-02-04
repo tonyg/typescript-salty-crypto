@@ -6,8 +6,8 @@
   "homepage": "https://github.com/tonyg/typescript-salty-crypto",
   "license": "MIT",
   "main": "dist/salty-crypto.js",
+  "types": "dist/salty-crypto.d.ts",
   "module": "lib/index.js",
-  "types": "lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },

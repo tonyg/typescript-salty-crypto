@@ -215,10 +215,13 @@ declare class CipherState {
     algorithms: Algorithms;
     view: DataView | null;
     nonce: Nonce;
+    readonly maxPayload: number;
     constructor(algorithms: Algorithms, key?: Uint8Array);
     encrypt(plaintext: Uint8Array, associated_data?: Uint8Array): Uint8Array;
     decrypt(ciphertext: Uint8Array, associated_data?: Uint8Array): Uint8Array;
     rekey(): void;
+    encrypt_large(plaintext: Uint8Array): Uint8Array[];
+    decrypt_large(ciphertexts: Uint8Array[]): Uint8Array;
 }
 
 type cipherstate_CipherState = CipherState;
