@@ -41,5 +41,15 @@
     "rollup-plugin-dts": "^5.1.1",
     "typescript": "4.9"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "files": [
+    "bin",
+    "browser-demo.html",
+    "dist",
+    "lib",
+    "rollup.config.js",
+    "src",
+    "test",
+    "tsconfig.json"
+  ]
 }
