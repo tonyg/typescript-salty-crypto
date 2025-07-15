@@ -9,7 +9,7 @@
   "main": "dist/salty-crypto.js",
   "module": "dist/salty-crypto.mjs",
   "browser": "dist/salty-crypto.global.js",
-  "types": "dist/salty-crypto.d.ts",
+  "types": "lib/index.d.ts",
   "exports": {
     "import": "./dist/salty-crypto.mjs",
     "require": "./dist/salty-crypto.js"
