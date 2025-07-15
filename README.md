@@ -73,17 +73,17 @@ Includes (and passes) test vectors from [noise-c](https://github.com/rweather/no
  - [`src/nonce.ts`](src/nonce.ts): Representation of 64- (or 96-) bit nonces.
  - [`src/random.ts`](src/random.ts): Port of [the randomness-generation code from tweetnacl.js](https://github.com/dchest/tweetnacl-js/blob/6a9594a35a27f9c723c5f1c107e376d1c65c23b3/nacl-fast.js#L2363-L2389).
  - [`test-vectors`](test-vectors): Contains Noise test vectors (more-or-less in the [standard JSON format](https://github.com/noiseprotocol/noise_wiki/wiki/Test-vectors)) copied from other projects.
- - [`test`](test): Contains a test driver and test code.
+ - [`test`](test): Contains test code.
 
 ## Copyright and License
 
-These libraries are Copyright © 2023 Tony Garnock-Jones `<tonyg@leastfixedpoint.com>`.
+These libraries are Copyright © 2023–2025 Tony Garnock-Jones `<tonyg@leastfixedpoint.com>`.
 
 They are made available to you under the [MIT license](https://spdx.org/licenses/MIT.html).
 
     MIT License
 
-    Copyright (c) 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+    Copyright (c) 2023–2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
