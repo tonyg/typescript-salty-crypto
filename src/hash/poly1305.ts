@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: MIT
-/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+/// SPDX-FileCopyrightText: Copyright © 2023-2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
 // TypeScript port of the "poly1305" class from nacl-fast.js from tweetnacl.
 //

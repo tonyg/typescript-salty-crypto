@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: MIT
-/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+/// SPDX-FileCopyrightText: Copyright © 2023-2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
 import { AEAD } from '../aead.js';
 import { Hash } from '../hash.js';

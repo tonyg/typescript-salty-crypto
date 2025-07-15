@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: MIT
-/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+/// SPDX-FileCopyrightText: Copyright © 2023-2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
 // `verify` from nacl-fast.js
 function verify(x: Uint8Array, y: Uint8Array, n: number): number {

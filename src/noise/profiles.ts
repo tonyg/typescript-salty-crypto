@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: MIT
-/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+/// SPDX-FileCopyrightText: Copyright © 2023-2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
 import { Algorithms } from './algorithms.js';
 import { BLAKE2s } from '../hash.js';

@@ -1,3 +1,6 @@
+/// SPDX-License-Identifier: MIT
+/// SPDX-FileCopyrightText: Copyright © 2023-2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+
 export function toHex(bs: Uint8Array): string {
     let s = '';
     bs.forEach(b => {

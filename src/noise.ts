@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: MIT
-/// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
+/// SPDX-FileCopyrightText: Copyright © 2023-2025 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
 export { Algorithms, matchPattern } from './noise/algorithms';
 export { CipherState } from './noise/cipherstate';
