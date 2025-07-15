@@ -3,13 +3,13 @@
 
 // RFC-8439 AEAD construction.
 
-import { AEAD, _encrypt, _decrypt } from '../aead';
-import { Nonce } from '../nonce';
+import { AEAD, _encrypt, _decrypt } from '../aead.js';
+import { Nonce } from '../nonce.js';
 
-import { ChaCha20 } from '../cipher/chacha20';
-import { Poly1305 } from '../hash/poly1305';
-import * as Bytes from '../bytes';
-import { HashAlgorithm } from '../hash';
+import { ChaCha20 } from '../cipher/chacha20.js';
+import { Poly1305 } from '../hash/poly1305.js';
+import * as Bytes from '../bytes.js';
+import { HashAlgorithm } from '../hash.js';
 
 const PADDING = new Uint8Array(16);
 

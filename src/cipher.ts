@@ -1,7 +1,7 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { Nonce } from './nonce';
+import { Nonce } from './nonce.js';
 
 export interface StreamCipher {
     readonly NAME: string;
@@ -17,4 +17,4 @@ export interface StreamCipher {
                messagelength?: number): void;
 }
 
-export { ChaCha20 } from './cipher/chacha20';
+export { ChaCha20 } from './cipher/chacha20.js';

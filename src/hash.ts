@@ -17,5 +17,5 @@ export interface HashAlgorithm {
     final(output?: Uint8Array): Uint8Array;
 }
 
-export { BLAKE2s } from './hash/blake2s';
-export { Poly1305 } from './hash/poly1305';
+export { BLAKE2s } from './hash/blake2s.js';
+export { Poly1305 } from './hash/poly1305.js';

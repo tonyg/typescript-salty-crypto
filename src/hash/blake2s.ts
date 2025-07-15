@@ -3,7 +3,7 @@
 
 // RFC 7693 BLAKE2s, ported from the C code therein.
 
-import type { Hash, HashAlgorithm } from '../hash';
+import type { Hash, HashAlgorithm } from '../hash.js';
 
 function ROTR32(n: number, bits: number): number {
     return (n >>> bits) | (n << (32 - bits));

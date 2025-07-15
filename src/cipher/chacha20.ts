@@ -3,8 +3,8 @@
 
 // RFC-8439 ChaCha20.
 
-import { StreamCipher } from '../cipher';
-import { Nonce } from '../nonce';
+import { StreamCipher } from '../cipher.js';
+import { Nonce } from '../nonce.js';
 
 function ROTATE(n: number, bits: number): number {
     return (n << bits) | (n >>> (32 - bits));

@@ -1,8 +1,8 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { HMAC } from './hmac';
-import * as Bytes from './bytes';
+import { HMAC } from './hmac.js';
+import * as Bytes from './bytes.js';
 
 export type HKDF = {
     (chainingKey: Uint8Array, input: Uint8Array, numOutputs: 2): [Uint8Array, Uint8Array];

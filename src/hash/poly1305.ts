@@ -9,7 +9,7 @@
 // * https://github.com/floodyberry/poly1305-donna
 // */
 
-import type { Hash, HashAlgorithm } from '../hash';
+import type { Hash, HashAlgorithm } from '../hash.js';
 
 export const Poly1305 = (class Poly1305 implements HashAlgorithm {
     static readonly NAME = "Poly1305";

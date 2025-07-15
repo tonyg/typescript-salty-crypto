@@ -1,9 +1,9 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { Nonce } from '../nonce';
-import { makeRekey } from './rekey';
-import { Algorithms } from './algorithms';
+import { Nonce } from '../nonce.js';
+import { makeRekey } from './rekey.js';
+import { Algorithms } from './algorithms.js';
 
 export class CipherState {
     view: DataView | null = null;

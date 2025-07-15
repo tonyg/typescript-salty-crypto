@@ -1,8 +1,8 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { AEAD } from '../aead';
-import { Nonce } from '../nonce';
+import { AEAD } from '../aead.js';
+import { Nonce } from '../nonce.js';
 
 export type Rekey = (k: DataView) => DataView;
 

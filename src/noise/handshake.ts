@@ -1,14 +1,14 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { DHKeyPair } from '../dh';
-import * as Bytes from '../bytes';
+import { DHKeyPair } from '../dh.js';
+import * as Bytes from '../bytes.js';
 
-import { Algorithms } from './algorithms';
-import { CipherState } from './cipherstate';
-import { HandshakePattern, KeyMixToken, lookupPattern, Token } from './patterns';
-import { HKDF, makeHKDF } from '../hkdf';
-import { makeHMAC } from '../hmac';
+import { Algorithms } from './algorithms.js';
+import { CipherState } from './cipherstate.js';
+import { HandshakePattern, KeyMixToken, lookupPattern, Token } from './patterns.js';
+import { HKDF, makeHKDF } from '../hkdf.js';
+import { makeHMAC } from '../hmac.js';
 
 export type Role = 'initiator' | 'responder';
 

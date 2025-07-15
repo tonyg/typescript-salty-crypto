@@ -1,8 +1,8 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { Hash } from './hash';
-import * as Bytes from './bytes';
+import { Hash } from './hash.js';
+import * as Bytes from './bytes.js';
 
 export type HMAC = {
     (key: Uint8Array, data: Uint8Array): Uint8Array;

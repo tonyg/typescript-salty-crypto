@@ -1,13 +1,13 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { AEAD } from '../aead';
-import { Hash } from '../hash';
-import { DH } from '../dh';
-import { HMAC } from '../hmac';
-import { HKDF } from '../hkdf';
+import { AEAD } from '../aead.js';
+import { Hash } from '../hash.js';
+import { DH } from '../dh.js';
+import { HMAC } from '../hmac.js';
+import { HKDF } from '../hkdf.js';
 
-import { Rekey } from './rekey';
+import { Rekey } from './rekey.js';
 
 export interface Algorithms {
     dh: DH,

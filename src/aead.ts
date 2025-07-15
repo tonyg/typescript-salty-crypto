@@ -1,7 +1,7 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { Nonce } from './nonce';
+import { Nonce } from './nonce.js';
 
 export class AuthenticationFailure extends Error {}
 
@@ -74,4 +74,4 @@ export function _decrypt(this: AEAD,
     return plaintext;
 }
 
-export { ChaCha20Poly1305_RFC8439 } from './aead/chacha20poly1305';
+export { ChaCha20Poly1305_RFC8439 } from './aead/chacha20poly1305.js';

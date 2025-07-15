@@ -1,8 +1,8 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-import { randomBytes } from "./random";
-import { scalarMult, scalarMultBase } from "./dh/x25519";
+import { randomBytes } from "./random.js";
+import { scalarMult, scalarMultBase } from "./dh/x25519.js";
 
 export type DHKeyPair = { public: Uint8Array, secret: Uint8Array };
 

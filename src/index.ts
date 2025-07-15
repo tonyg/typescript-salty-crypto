@@ -1,29 +1,29 @@
 /// SPDX-License-Identifier: MIT
 /// SPDX-FileCopyrightText: Copyright © 2023 Tony Garnock-Jones <tonyg@leastfixedpoint.com>
 
-export * from './aead';
-export * as Bytes from './bytes';
-export * from './cipher';
-export * from './dh';
-export * from './hash';
-export * from './hkdf';
-export * from './hmac';
-export * as IO from './io';
-export * from './noise';
-export * from './nonce';
-export * from './random';
+export * from './aead.js';
+export * as Bytes from './bytes.js';
+export * from './cipher.js';
+export * from './dh.js';
+export * from './hash.js';
+export * from './hkdf.js';
+export * from './hmac.js';
+export * as IO from './io.js';
+export * from './noise.js';
+export * from './nonce.js';
+export * from './random.js';
 
-import * as chacha20poly1305 from './aead/chacha20poly1305';
-import * as chacha20 from './cipher/chacha20';
-import * as x25519 from './dh/x25519';
-import * as blake2s from './hash/blake2s';
-import * as poly1305 from './hash/poly1305';
-import * as algorithms from './noise/algorithms';
-import * as cipherstate from './noise/cipherstate';
-import * as handshake from './noise/handshake';
-import * as patterns from './noise/patterns';
-import * as profiles from './noise/profiles';
-import * as rekey from './noise/rekey';
+import * as chacha20poly1305 from './aead/chacha20poly1305.js';
+import * as chacha20 from './cipher/chacha20.js';
+import * as x25519 from './dh/x25519.js';
+import * as blake2s from './hash/blake2s.js';
+import * as poly1305 from './hash/poly1305.js';
+import * as algorithms from './noise/algorithms.js';
+import * as cipherstate from './noise/cipherstate.js';
+import * as handshake from './noise/handshake.js';
+import * as patterns from './noise/patterns.js';
+import * as profiles from './noise/profiles.js';
+import * as rekey from './noise/rekey.js';
 
 export const INTERNALS = {
     aead: {
