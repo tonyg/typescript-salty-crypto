@@ -15,8 +15,7 @@ open() {
 }
 
 open "yarn compile:watch"
-open "yarn rollup:watch"
-open "yarn test-compile:watch"
+open "yarn bundle:watch"
 open "yarn test:watch"
 
 tmux select-layout even-vertical

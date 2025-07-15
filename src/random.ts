@@ -12,7 +12,6 @@
 // // See for details: http://tweetnacl.cr.yp.to/
 
 export const _randomBytes: (out: Uint8Array, n: number) => void = (() => {
-    var crypto: any = typeof self !== 'undefined' ? (self.crypto || (self as any).msCrypto) : null;
     if (crypto && crypto.getRandomValues) {
         const QUOTA = 65536;
         return (x: Uint8Array, n: number) => {
@@ -21,7 +20,7 @@ export const _randomBytes: (out: Uint8Array, n: number) => void = (() => {
             }
         };
     } else if (typeof require !== 'undefined') {
-        crypto = require('crypto');
+        const crypto = require('crypto');
         if (crypto && crypto.randomBytes) {
             return (x: Uint8Array, n: number) => x.set(crypto.randomBytes(n));
         }

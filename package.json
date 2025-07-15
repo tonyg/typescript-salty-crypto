@@ -5,9 +5,16 @@
   "author": "Tony Garnock-Jones <tonyg@leastfixedpoint.com>",
   "homepage": "https://github.com/tonyg/typescript-salty-crypto",
   "license": "MIT",
+
   "main": "dist/salty-crypto.js",
+  "module": "dist/salty-crypto.mjs",
+  "browser": "dist/salty-crypto.global.js",
   "types": "dist/salty-crypto.d.ts",
-  "module": "lib/index.js",
+  "exports": {
+    "import": "./dist/salty-crypto.mjs",
+    "require": "./dist/salty-crypto.js"
+  },
+
   "publishConfig": {
     "access": "public"
   },
@@ -15,27 +22,28 @@
     "type": "git",
     "url": "https://github.com/tonyg/typescript-salty-crypto"
   },
+
+  "bin": {
+    "salty-crypto-keygen-x25519": "./bin/salty-crypto-keygen-x25519"
+  },
+
   "scripts": {
-    "prepare": "yarn clean && yarn compile && yarn rollup",
+    "prepare": "yarn clean && yarn compile && yarn bundle",
     "compile": "yarn tsc",
     "compile:watch": "yarn compile -w",
-    "rollup": "rollup -c",
-    "rollup:watch": "yarn rollup -w",
+    "bundle": "tsup",
+    "bundle:watch": "tsup --watch",
     "test": "vitest --no-watch",
     "test:watch": "vitest --watch",
     "clean": "rm -rf lib/ dist/",
     "veryclean": "yarn clean && rm -rf node_modules/",
     "fixcopyright": "fixcopyright.rkt --preset-typescript --file-pattern 'src/**.ts' MIT && fixcopyright.rkt --preset-typescript --file-pattern 'test/**.ts' MIT"
   },
-  "bin": {
-    "salty-crypto-keygen-x25519": "./bin/salty-crypto-keygen-x25519"
-  },
+
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.0",
     "@types/node": "^18",
     "glob": "^11.0.3",
-    "rollup": "^3.10.1",
-    "rollup-plugin-dts": "^5.1.1",
+    "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   },
@@ -45,9 +53,9 @@
     "browser-demo.html",
     "dist",
     "lib",
-    "rollup.config.js",
     "src",
     "test",
-    "tsconfig.json"
+    "tsconfig.json",
+    "tsup.config.ts"
   ]
 }
