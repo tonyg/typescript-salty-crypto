@@ -1,5 +1,5 @@
-import { IO } from '../../dist/salty-crypto.js';
-import { describe, it, expect } from '../harness';
+import { IO } from '../dist/salty-crypto.js';
+import { describe, it, expect } from 'vitest';
 
 describe('basic', async () => {
     const s =

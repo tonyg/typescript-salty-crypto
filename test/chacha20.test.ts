@@ -1,6 +1,6 @@
-import { ChaCha20, INTERNALS, Nonce } from '../../dist/salty-crypto.js';
+import { ChaCha20, INTERNALS, Nonce } from '../dist/salty-crypto.js';
 const { chacha20_quarter_round, chacha20_block } = INTERNALS.cipher.chacha20;
-import { it, expect } from '../harness';
+import { it, expect } from 'vitest';
 
 it('chacha20_quarter_round 1', () => {
     const s = new Uint32Array(4);

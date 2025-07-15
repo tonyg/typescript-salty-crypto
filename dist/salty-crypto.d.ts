@@ -35,7 +35,7 @@ declare function _decrypt(this: AEAD, ciphertextAndTag: Uint8Array, key: DataVie
 declare function equal(x: Uint8Array, y: Uint8Array, n: number): boolean;
 declare function xor(a: Uint8Array, b: Uint8Array): Uint8Array;
 declare function append(a: Uint8Array, b: Uint8Array): Uint8Array;
-declare const EMPTY: Uint8Array;
+declare const EMPTY: Uint8Array<ArrayBuffer>;
 
 declare const bytes_d_EMPTY: typeof EMPTY;
 declare const bytes_d_append: typeof append;
@@ -87,10 +87,10 @@ declare const X25519: DH;
 
 declare const BLAKE2s: {
     new (key?: Uint8Array, outlen?: number): {
-        b: Uint8Array;
-        bv: DataView;
-        h: Uint32Array;
-        t: Uint32Array;
+        b: Uint8Array<ArrayBuffer>;
+        bv: DataView<ArrayBuffer>;
+        h: Uint32Array<ArrayBuffer>;
+        t: Uint32Array<ArrayBuffer>;
         c: number;
         outlen: number;
         update(input: Uint8Array, offset?: number, length?: number): void;
@@ -113,10 +113,10 @@ declare namespace blake2s {
 
 declare const Poly1305: {
     new (key?: Uint8Array, outlen?: number): {
-        buffer: Uint8Array;
-        r: Uint16Array;
-        h: Uint16Array;
-        pad: Uint16Array;
+        buffer: Uint8Array<ArrayBuffer>;
+        r: Uint16Array<ArrayBuffer>;
+        h: Uint16Array<ArrayBuffer>;
+        pad: Uint16Array<ArrayBuffer>;
         leftover: number;
         fin: number;
         blocks(m: Uint8Array, mpos: number, bytes: number): void;
@@ -302,8 +302,8 @@ declare class Handshake {
     mixHash(data: Uint8Array): void;
     mixKey(input: Uint8Array): void;
     mixKeyAndHashNextPSK(): void;
-    encryptAndHash(p: Uint8Array): Uint8Array;
-    decryptAndHash(c: Uint8Array): Uint8Array;
+    encryptAndHash(p: Uint8Array): Uint8Array<ArrayBufferLike>;
+    decryptAndHash(c: Uint8Array): Uint8Array<ArrayBufferLike>;
     _split(): TransportState | null;
     _nextStep(): Token[];
     _processKeyMixToken(t: KeyMixToken): void;

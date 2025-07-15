@@ -1,6 +1,6 @@
-import { Poly1305 } from '../../dist/salty-crypto.js';
+import { Poly1305 } from '../dist/salty-crypto.js';
 
-import { it, expect } from '../harness';
+import { it, expect } from 'vitest';
 
 it('section 2.5.2 from rfc 8439', () => {
     const key = Uint8Array.from([

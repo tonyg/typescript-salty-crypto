@@ -21,11 +21,10 @@
     "compile:watch": "yarn compile -w",
     "rollup": "rollup -c",
     "rollup:watch": "yarn rollup -w",
-    "test-compile": "yarn tsc -p test/tsconfig.json",
-    "test-compile:watch": "yarn test-compile -w",
-    "test": "node -r esm lib-test/harness.js",
-    "test:watch": "mkdir -p lib-test && cd lib-test && inotifytest yarn test",
-    "clean": "rm -rf lib/ lib-test/ dist/",
+    "test": "vitest --no-watch",
+    "test:watch": "vitest --watch",
+    "clean": "rm -rf lib/ dist/",
+    "veryclean": "yarn clean && rm -rf node_modules/",
     "fixcopyright": "fixcopyright.rkt --preset-typescript --file-pattern 'src/**.ts' MIT && fixcopyright.rkt --preset-typescript --file-pattern 'test/**.ts' MIT"
   },
   "bin": {
@@ -33,13 +32,12 @@
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.0",
-    "@types/glob": "^8.0.1",
-    "esm": "^3.2.25",
-    "expect": "^29.4.0",
-    "glob": "^8.1.0",
+    "@types/node": "^18",
+    "glob": "^11.0.3",
     "rollup": "^3.10.1",
     "rollup-plugin-dts": "^5.1.1",
-    "typescript": "4.9"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {},
   "files": [

@@ -1,5 +1,5 @@
-import { BLAKE2s } from '../../dist/salty-crypto.js';
-import { it, expect } from '../harness';
+import { BLAKE2s } from '../dist/salty-crypto.js';
+import { it, expect } from 'vitest';
 
 it('Appendix B of RFC 7693', () => {
     expect(BLAKE2s.digest(new TextEncoder().encode("abc"))).toEqual(Uint8Array.from([

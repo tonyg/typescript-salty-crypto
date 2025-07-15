@@ -1,5 +1,5 @@
-import { ChaCha20Poly1305_RFC8439, Nonce } from '../../dist/salty-crypto.js';
-import { it, expect } from '../harness';
+import { ChaCha20Poly1305_RFC8439, Nonce } from '../dist/salty-crypto.js';
+import { it, expect } from 'vitest';
 
 it('section 2.8.2 from rfc 8439', () => {
     const sunscreen_str = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";

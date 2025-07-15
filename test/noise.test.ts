@@ -8,8 +8,8 @@ import {
     isOneWay,
     lookupPattern,
     matchPattern,
-} from '../../dist/salty-crypto.js';
-import { describe, it, expect } from '../harness';
+} from '../dist/salty-crypto.js';
+import { describe, it, expect } from 'vitest';
 
 import fs from 'fs';
 import path from 'path';
