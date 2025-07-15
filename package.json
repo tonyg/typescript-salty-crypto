@@ -1,11 +1,10 @@
 {
   "name": "salty-crypto",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "Noise Protocol Framework, plus X25519/ChaCha20Poly1305/BLAKE2s code, for browser and node.js",
   "author": "Tony Garnock-Jones <tonyg@leastfixedpoint.com>",
   "homepage": "https://github.com/tonyg/typescript-salty-crypto",
   "license": "MIT",
-
   "main": "dist/salty-crypto.js",
   "module": "dist/salty-crypto.mjs",
   "browser": "dist/salty-crypto.global.js",
@@ -14,7 +13,6 @@
     "import": "./dist/salty-crypto.mjs",
     "require": "./dist/salty-crypto.js"
   },
-
   "publishConfig": {
     "access": "public"
   },
@@ -22,11 +20,9 @@
     "type": "git",
     "url": "https://github.com/tonyg/typescript-salty-crypto"
   },
-
   "bin": {
     "salty-crypto-keygen-x25519": "./bin/salty-crypto-keygen-x25519"
   },
-
   "scripts": {
     "prepare": "yarn clean && yarn compile && yarn bundle",
     "compile": "yarn tsc",
@@ -39,7 +35,6 @@
     "veryclean": "yarn clean && rm -rf node_modules/",
     "fixcopyright": "fixcopyright.rkt --preset-typescript --file-pattern 'src/**.ts' MIT && fixcopyright.rkt --preset-typescript --file-pattern 'test/**.ts' MIT"
   },
-
   "devDependencies": {
     "@types/node": "^18",
     "glob": "^11.0.3",
