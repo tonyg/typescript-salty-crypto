@@ -5,13 +5,13 @@
   "author": "Tony Garnock-Jones <tonyg@leastfixedpoint.com>",
   "homepage": "https://github.com/tonyg/typescript-salty-crypto",
   "license": "MIT",
-  "main": "dist/salty-crypto.js",
+  "main": "dist/salty-crypto.cjs",
   "module": "dist/salty-crypto.mjs",
-  "browser": "dist/salty-crypto.global.js",
+  "browser": "dist/salty-crypto.js",
   "types": "lib/index.d.ts",
   "exports": {
     "import": "./dist/salty-crypto.mjs",
-    "require": "./dist/salty-crypto.js"
+    "require": "./dist/salty-crypto.cjs"
   },
   "publishConfig": {
     "access": "public"

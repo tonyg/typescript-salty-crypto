@@ -5,6 +5,13 @@ export default defineConfig({
         'salty-crypto': 'src/index.ts',
     },
     format: ['cjs', 'esm', 'iife'],
+    outExtension({ format }) {
+        switch (format) {
+            case 'cjs': return { js: '.cjs' };
+            case 'esm': return { js: '.mjs' };
+            case 'iife': return { js: '.js' };
+        }
+    },
     globalName: 'SaltyCrypto',
     dts: true,
     sourcemap: true,
